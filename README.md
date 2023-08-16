@@ -1,4 +1,4 @@
-# Tilleggsstønader
+# tilleggsstonader
 
 Startpunkt (metarepo) for tilleggsstønader
 
@@ -33,3 +33,5 @@ Dersom du nå åpner `build.gradle` med `Open` (som Project) i IntelliJ så får
 IntelliJ-oppsett.
 
 Repoene som er inkludert i dette meta-repoet er
+
+- [tilleggsstonader-soknad] (https://github.com/navikt/tilleggsstonader-soknad)

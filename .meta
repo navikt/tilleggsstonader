@@ -1,3 +1,5 @@
 {
-  "projects": {}
+  "projects": {
+    "tilleggsstonader-soknad": "git@github.com:navikt/tilleggsstonader-soknad.git"
+  }
 }
