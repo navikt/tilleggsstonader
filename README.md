@@ -32,6 +32,13 @@ Se [meta](https://github.com/mateodelnorte/meta) for flere kommandoer.
 Dersom du nå åpner `build.gradle` med `Open` (som Project) i IntelliJ så får du alle komponentene inn i ett
 IntelliJ-oppsett.
 
+### Opprettelse av nytt repo
+
+#### Github
+* Repository secrets
+  * NAIS_DEPLOY_APIKEY
+  * SLACK_WEBHOOK_URL
+
 Repoene som er inkludert i dette meta-repoet er
 
 - [tilleggsstonader-soknad] (https://github.com/navikt/tilleggsstonader-soknad)
