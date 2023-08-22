@@ -26,6 +26,10 @@ Se [meta](https://github.com/mateodelnorte/meta) for flere kommandoer.
 Dersom du nå åpner `build.gradle` med `Open` (som Project) i IntelliJ så får du alle komponentene inn i ett
 IntelliJ-oppsett.
 
+## Dokumentasjon
+### Developer
+* [Gradle](./doc/dev/gradle.md)
+
 ### Hente nye repoen som eg lagt til
 Mer dokumentasjon: https://github.com/mateodelnorte/meta-git
 * `git pull`
