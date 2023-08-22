@@ -3,3 +3,8 @@
 
 tilleggsstonader-*
 
+/tilleggsstonader-soknad/
+/tilleggsstonader-soknad-api/
+
+# Ignore Gradle build output directory
+build

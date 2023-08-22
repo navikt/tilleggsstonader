@@ -21,12 +21,6 @@ meta git clone git@github.com:navikt/tilleggsstonader.git
 
 Nå kan git brukes som normalt for hvert repo.
 
-For å legge til et nytt repo kan man skrive
-
-```
-meta project import tilleggsstonader-whatnot git@github.com:navikt/tilleggsstonader-whatnot
-```
-
 Se [meta](https://github.com/mateodelnorte/meta) for flere kommandoer.
 
 Dersom du nå åpner `build.gradle` med `Open` (som Project) i IntelliJ så får du alle komponentene inn i ett
@@ -34,11 +28,19 @@ IntelliJ-oppsett.
 
 ### Opprettelse av nytt repo
 
+Dette gjelder både for frontend og backend
+
 #### Github
+* Opprett repo
 * Repository secrets
   * NAIS_DEPLOY_APIKEY
   * SLACK_WEBHOOK_URL
+* Kjør `meta project import <repo-navn> git@github.com:navikt/<repo-navn>`
+* Legg til repot i [Lenker til repo](#lenker-til-repo) 
+* Legg til repo i [settings.gradle.kts](./settings.gradle.kts)
 
+### Lenker til repo
 Repoene som er inkludert i dette meta-repoet er
 
 - [tilleggsstonader-soknad] (https://github.com/navikt/tilleggsstonader-soknad)
+- [tilleggsstonader-soknad-api] (https://github.com/navikt/tilleggsstonader-soknad-api)
