@@ -29,9 +29,6 @@ IntelliJ-oppsett.
 #### Annet
 * For å laste ned avhengigheter for frontend så trenger man å sette opp github-token
   * Gå til https://github.com/settings/tokens og lag en PAT (personal access token)
-  * Legg inn `GITHUB_USERNAME` og `GITHUB_TOKEN` i en bashrc/zshrc-fil
-    * `export GITHUB_USERNAME=navikt`
-    * `export GITHUB_TOKEN=<token>`
   * Logg inn med `npm login --scope=@navikt --registry=https://npm.pkg.github.com`
     * Bruk brukernavn til github
     * Bruk GITHUB_TOKEN som passord
