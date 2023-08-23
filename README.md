@@ -45,6 +45,7 @@ Dette gjelder både for frontend og backend
 * Legg til `branch rules` https://github.com/navikt/<repo-navn>/settings/branches
   * Require signed commits
   * Do not allow bypassing the above settings
+* Settings: `Automatically delete head branches` efter PR
 * Repository secrets
   * NAIS_DEPLOY_APIKEY (hentes fra [nais-console](https://console.nav.cloud.nais.io/team/tilleggsstonader/settings)
   * SLACK_WEBHOOK_URL
