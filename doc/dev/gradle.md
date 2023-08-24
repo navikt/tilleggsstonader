@@ -1,4 +1,5 @@
 # Hvordan bruke gradle
 
-* Formatter kode med ktlint
-  * `./gradlew spotlessApply`
+* Ktlint
+  * `./gradlew ktlintCheck`
+  * `./gradlew ktlintFormat`
