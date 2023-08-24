@@ -1,10 +1,10 @@
 .idea
 .gradle
 
+build
+
 tilleggsstonader-*
 
+/tilleggsstonader-libs/
 /tilleggsstonader-soknad/
 /tilleggsstonader-soknad-api/
-
-# Ignore Gradle build output directory
-build

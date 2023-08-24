@@ -1,5 +1,6 @@
 {
   "projects": {
+    "tilleggsstonader-libs": "git@github.com:navikt/tilleggsstonader-libs",
     "tilleggsstonader-soknad": "git@github.com:navikt/tilleggsstonader-soknad.git",
     "tilleggsstonader-soknad-api": "git@github.com:navikt/tilleggsstonader-soknad-api"
   }

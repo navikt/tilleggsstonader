@@ -47,8 +47,8 @@ Dette gjelder både for frontend og backend
   * Do not allow bypassing the above settings
 * Settings: `Automatically delete head branches` efter PR
 * Repository secrets
-  * NAIS_DEPLOY_APIKEY (hentes fra [nais-console](https://console.nav.cloud.nais.io/team/tilleggsstonader/settings)
-  * SLACK_WEBHOOK_URL
+  * Hvis appen skal deployes `NAIS_DEPLOY_APIKEY` (hentes fra [nais-console](https://console.nav.cloud.nais.io/team/tilleggsstonader/settings)
+  * `SLACK_WEBHOOK_URL`
 
 #### tilleggstønader-repo
 * Kjør `meta project import <repo-navn> git@github.com:navikt/<repo-navn>`
@@ -58,5 +58,6 @@ Dette gjelder både for frontend og backend
 ### Lenker til repo
 Repoene som er inkludert i dette meta-repoet er
 
+- [tilleggsstonader-libs] (https://github.com/navikt/tilleggsstonader-libs)
 - [tilleggsstonader-soknad] (https://github.com/navikt/tilleggsstonader-soknad)
 - [tilleggsstonader-soknad-api] (https://github.com/navikt/tilleggsstonader-soknad-api)
