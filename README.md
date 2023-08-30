@@ -28,7 +28,8 @@ IntelliJ-oppsett.
 
 #### Annet
 * For å laste ned avhengigheter for frontend så trenger man å sette opp github-token
-  * Gå til https://github.com/settings/tokens og lag en PAT (personal access token)
+  * Gå til https://github.com/settings/tokens og lag en PAT (personal access token). Tokenet må minimum ha scopet "Packages:read"
+    * Etter tokenet er generet må du enable SSO for det. Trykk på "Configure SSO" og "Authorize" for navikt for relevant token på https://github.com/settings/tokens
   * Logg inn med `npm login --scope=@navikt --registry=https://npm.pkg.github.com`
     * Bruk brukernavn til github
     * Bruk GITHUB_TOKEN som passord
