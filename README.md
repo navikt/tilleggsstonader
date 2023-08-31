@@ -49,7 +49,7 @@ Dette gjelder både for frontend og backend
 
 #### Github
 * Opprett repo
-* Legg til Team tilleggstønader som admin under https://github.com/navikt/<repo-navn>/settings/access
+* Legg til Team tilleggstønader som admin under `https://github.com/navikt/<repo-navn>/settings/access
 * Legg til `branch rules` https://github.com/navikt/<repo-navn>/settings/branches
   * Require signed commits
   * Do not allow bypassing the above settings
@@ -67,5 +67,6 @@ Dette gjelder både for frontend og backend
 Repoene som er inkludert i dette meta-repoet er
 
 - [tilleggsstonader-libs] (https://github.com/navikt/tilleggsstonader-libs)
+- [tilleggsstonader-sak] (https://github.com/navikt/tilleggsstonader-sak)
 - [tilleggsstonader-soknad] (https://github.com/navikt/tilleggsstonader-soknad)
 - [tilleggsstonader-soknad-api] (https://github.com/navikt/tilleggsstonader-soknad-api)

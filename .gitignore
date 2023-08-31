@@ -6,5 +6,6 @@ build
 tilleggsstonader-*
 
 /tilleggsstonader-libs/
+/tilleggsstonader-sak/
 /tilleggsstonader-soknad/
 /tilleggsstonader-soknad-api/
