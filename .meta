@@ -1,5 +1,6 @@
 {
   "projects": {
+    "tilleggsstonader-integrasjoner": "git@github.com:navikt/tilleggsstonader-integrasjoner.git",
     "tilleggsstonader-libs": "git@github.com:navikt/tilleggsstonader-libs",
     "tilleggsstonader-sak": "git@github.com:navikt/tilleggsstonader-sak",
     "tilleggsstonader-sak-frontend": "git@github.com:navikt/tilleggsstonader-sak-frontend",

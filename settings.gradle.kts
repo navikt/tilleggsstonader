@@ -1,5 +1,6 @@
 rootProject.name = "tilleggsstonader"
 
+includeBuild("tilleggsstonader-integrasjoner")
 includeBuild("tilleggsstonader-libs")
 includeBuild("tilleggsstonader-sak")
 includeBuild("tilleggsstonader-sak-frontend")
