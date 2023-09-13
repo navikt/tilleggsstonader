@@ -5,9 +5,10 @@ build
 
 tilleggsstonader-*
 
+/tilleggsstonader-integrasjoner/
 /tilleggsstonader-libs/
+/tilleggsstonader-kontrakter/
 /tilleggsstonader-sak/
 /tilleggsstonader-sak-frontend/
 /tilleggsstonader-soknad/
 /tilleggsstonader-soknad-api/
-/tilleggsstonader-integrasjoner/

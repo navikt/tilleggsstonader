@@ -69,6 +69,7 @@ Dette gjelder både for frontend og backend
 Repoene som er inkludert i dette meta-repoet er
 
 - [tilleggsstonader-integrasjoner] (https://github.com/navikt/tilleggsstonader-integrasjoner)
+- [tilleggsstonader-kontrakter] (https://github.com/navikt/tilleggsstonader-kontrakter)
 - [tilleggsstonader-libs] (https://github.com/navikt/tilleggsstonader-libs)
 - [tilleggsstonader-sak] (https://github.com/navikt/tilleggsstonader-sak)
 - [tilleggsstonader-sak-frontend] (https://github.com/navikt/tilleggsstonader-sak-frontend)
