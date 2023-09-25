@@ -10,3 +10,5 @@ includeBuild("tilleggsstonader-sak-frontend")
 
 includeBuild("tilleggsstonader-soknad")
 includeBuild("tilleggsstonader-soknad-api")
+
+includeBuild("tilleggsstonader-brev-sanity")
