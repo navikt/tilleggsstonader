@@ -2,24 +2,47 @@
 
 ## Analys av Arena
 
-* Hvordan finner man om en søknad/sak/vedtak er ferdigstilt? 
+* Hvordan finner man om en søknad/sak/vedtak er ferdigstilt?
 
 ### Sak
+
 * Hvordan er egentlige saker oppdelt? Det virker som at en person kan ha flere saker
 * Kolonnen `objekt_id` peker til person
-  * Gjør den alltid det? `select distinct tabellnavnalias from sak;` (gir den noe mer enn `PERS`?)
+    * Gjør den alltid det? `select distinct tabellnavnalias from sak;` (gir den noe mer enn `PERS`?)
 
 ### Vedtak
 
-https://confluence.adeo.no/pages/viewpage.action?pageId=135791802
+* https://confluence.adeo.no/display/ARENA/Arena+-+Datamodell+-+Vedtak#ArenaDatamodellVedtak-VEDTAKTYPE
 
 * Det finnes 2 ulike `rettighetkoder` for tilsyn til barn, `TSOTILBARN` og `TSRTILBARN`
-  * Burde sjekke når `TSRTILBARN` sist ble brukt
-* Flere typer vedtak (ulike stønader) per sak 
-  * Hvor vanlig er dette?
-  * Hvorfor? 
-    * Er det fordi man har sendt inn en søknad der man søker om flere ytelser?
-  * `select sak_id, count(*) from (select sak_id, rettighetkode, count(*) from vedtak group by sak_id, rettighetkode) group by sak_id having count(*) > 1;`
+    * Burde sjekke når `TSRTILBARN` sist ble brukt
+* Flere typer vedtak (ulike stønader) per sak
+    * Hvor vanlig er dette?
+    * Hvorfor?
+        * Er det fordi man har sendt inn en søknad der man søker om flere ytelser?
+    * `select sak_id, count(*) from (select sak_id, rettighetkode, count(*) from vedtak group by sak_id, rettighetkode) group by sak_id having count(*) > 1;`
+
+#### Vedtaktypekode
+
+| Kode    | Beskrivelse   |
+|---------|---------------|
+| E       |               |
+| O       |               |
+| S       |               |
+| ------- | ------------- |
+
+#### Vedtakstatuskode
+
+| Kode    | Beskrivelse   |
+|---------|---------------|
+| REGIS   |               |
+| AVSLU   |               |
+| INNST   |               |
+| MOTAT   |               |
+| IVERK   |               |
+| ------- | ------------- |
+
+#### Rettighetkode
 
 | Kode         | Beskrivelse                                                    |
 |--------------|----------------------------------------------------------------|
