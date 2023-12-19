@@ -8,27 +8,8 @@
 2.  Gi deg selv tilgang (sørg for å stå i rett context og namespace):
 
 ```shell
-nais postgres grant tilleggsstonader-sak
+nais postgres grant --context dev-gcp --namespace tilleggsstonader tilleggsstonader-sak
 ```
-
-<details>
-<summary>ℹ️ Bytt context og namespace</summary>
-
-1. Bytt til rett context:
-
-    ```shell
-    kubectl config use-context dev-gcp
-    ```
-
-2. Bytt til rett namespace:
-    ```shell
-    kubectl config set-context --current --namespace=tilleggsstonader
-    ```
-3. Gi deg selv tilgang:
-   `shell
-nais postgres grant tilleggsstonader-sak
-`
-   </details>
 
 <details>
 <summary>🧠 Forenklet script som kan legges inn i `~\.zshrc`</summary>
@@ -39,15 +20,10 @@ db-ny(){
     gcloud auth login --update-adc
 
     CONTEXT="${1:-dev-gcp}"
-    echo "Kobler til context ${CONTEXT}"
-    kubectl config use-context $CONTEXT
+    DATABASE="${1:-tilleggsstonader-sak}"
 
-    echo "Kobler til namespace tilleggsstonader"
-    kubectl config set-context --current --namespace=tilleggsstonader
-
-    DATABASE="${2:-tilleggsstonader-sak}"
-    echo "Ber om tilgang til ${DATABASE}"
-    nais postgres grant $DATABASE
+    echo "Kobler til database ${DATABASE} i context ${CONTEXT}"
+    nais postgres grant --context $CONTEXT --namespace tilleggsstonader $DATABASE
 }
 ```
 
