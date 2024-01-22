@@ -8,6 +8,8 @@ includeBuild("tilleggsstonader-integrasjoner")
 includeBuild("tilleggsstonader-sak")
 includeBuild("tilleggsstonader-sak-frontend")
 
+includeBuild("tilleggsstonader-slackbot")
+
 includeBuild("tilleggsstonader-soknad")
 includeBuild("tilleggsstonader-soknad-api")
 
