@@ -5,6 +5,7 @@
     "tilleggsstonader-libs": "git@github.com:navikt/tilleggsstonader-libs",
     "tilleggsstonader-sak": "git@github.com:navikt/tilleggsstonader-sak",
     "tilleggsstonader-sak-frontend": "git@github.com:navikt/tilleggsstonader-sak-frontend",
+    "tilleggsstonader-slackbot": "git@github.com:navikt/tilleggsstonader-slackbot",
     "tilleggsstonader-soknad": "git@github.com:navikt/tilleggsstonader-soknad.git",
     "tilleggsstonader-soknad-api": "git@github.com:navikt/tilleggsstonader-soknad-api",
     "tilleggsstonader-brev-sanity": "git@github.com:navikt/tilleggsstonader-brev-sanity"

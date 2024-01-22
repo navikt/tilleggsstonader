@@ -82,5 +82,6 @@ Repoene som er inkludert i dette meta-repoet er
 -   [tilleggsstonader-libs](https://github.com/navikt/tilleggsstonader-libs)
 -   [tilleggsstonader-sak](https://github.com/navikt/tilleggsstonader-sak)
 -   [tilleggsstonader-sak-frontend](https://github.com/navikt/tilleggsstonader-sak-frontend)
+-   [tilleggsstonader-slackbot](https://github.com/navikt/tilleggsstonader-slackbot)
 -   [tilleggsstonader-soknad](https://github.com/navikt/tilleggsstonader-soknad)
 -   [tilleggsstonader-soknad-api](https://github.com/navikt/tilleggsstonader-soknad-api)
