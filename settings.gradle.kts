@@ -3,6 +3,8 @@ rootProject.name = "tilleggsstonader"
 includeBuild("tilleggsstonader-kontrakter")
 includeBuild("tilleggsstonader-libs")
 
+includeBuild("tilleggsstonader-arena")
+
 includeBuild("tilleggsstonader-integrasjoner")
 
 includeBuild("tilleggsstonader-sak")

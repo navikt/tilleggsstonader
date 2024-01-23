@@ -63,7 +63,6 @@ Dette gjelder både for frontend og backend
     -   `Allow auto-merge`
     -   `Automatically delete head branches` efter PR
 -   Repository secrets
-    -   Hvis appen skal deployes `NAIS_DEPLOY_APIKEY` (hentes fra [nais-console](https://console.nav.cloud.nais.io/team/tilleggsstonader/settings)
     -   `SLACK_WEBHOOK_URL`
 
 #### tilleggstønader-repo
@@ -76,6 +75,7 @@ Dette gjelder både for frontend og backend
 
 Repoene som er inkludert i dette meta-repoet er
 
+-   [tilleggsstonader-arena](https://github.com/navikt/tilleggsstonader-arena)
 -   [tilleggsstonader-brev-sanity](https://github.com/navikt/tilleggsstonader-brev-sanity)
 -   [tilleggsstonader-integrasjoner](https://github.com/navikt/tilleggsstonader-integrasjoner)
 -   [tilleggsstonader-kontrakter](https://github.com/navikt/tilleggsstonader-kontrakter)
