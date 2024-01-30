@@ -5,6 +5,7 @@ includeBuild("tilleggsstonader-libs")
 
 includeBuild("tilleggsstonader-arena")
 
+includeBuild("tilleggsstonader-htmlify")
 includeBuild("tilleggsstonader-integrasjoner")
 
 includeBuild("tilleggsstonader-sak")

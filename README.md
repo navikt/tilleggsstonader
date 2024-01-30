@@ -77,6 +77,7 @@ Repoene som er inkludert i dette meta-repoet er
 
 -   [tilleggsstonader-arena](https://github.com/navikt/tilleggsstonader-arena)
 -   [tilleggsstonader-brev-sanity](https://github.com/navikt/tilleggsstonader-brev-sanity)
+-   [tilleggsstonader-htmlify](https://github.com/navikt/tilleggsstonader-htmlify)
 -   [tilleggsstonader-integrasjoner](https://github.com/navikt/tilleggsstonader-integrasjoner)
 -   [tilleggsstonader-kontrakter](https://github.com/navikt/tilleggsstonader-kontrakter)
 -   [tilleggsstonader-libs](https://github.com/navikt/tilleggsstonader-libs)
