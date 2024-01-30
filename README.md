@@ -55,8 +55,8 @@ Dette gjelder både for frontend og backend
 #### Github
 
 -   Opprett repo
--   Legg til Team tilleggstønader som admin under `https://github.com/navikt/<repo-navn>/settings/access
--   Legg til `branch rules` https://github.com/navikt/<repo-navn>/settings/branches
+-   Legg til Team tilleggstønader som admin under https://github.com/navikt/repo-navn/settings/access
+-   Legg til `branch rules` https://github.com/navikt/repo-navn/settings/branches
     -   Require signed commits
     -   Do not allow bypassing the above settings
 -   Settings:
