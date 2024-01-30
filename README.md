@@ -64,6 +64,8 @@ Dette gjelder både for frontend og backend
     -   `Automatically delete head branches` efter PR
 -   Repository secrets
     -   `SLACK_WEBHOOK_URL`
+- Hvis appen skal deployes, autoriser appen
+  - https://console.nav.cloud.nais.io/team/tilleggsstonader/repositories
 
 #### tilleggstønader-repo
 
