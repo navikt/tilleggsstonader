@@ -5,7 +5,7 @@
 * Gi seg selv tilgang, en gang per context/database
     * `nais postgres --context dev-gcp --namespace tilleggsstonader grant tilleggsstonader-sak`
 * Koble seg på databasen, man trenger ikke noe passord
-    * `nais postgres --context dev-gcp --namespace tilleggsstonader proxy --port 5700 tilleggsstonader-sak`
+    * `nais postgres proxy --context dev-gcp --namespace tilleggsstonader --port 5700 tilleggsstonader-sak`
     * Det er fint hvis man bruker ulike ports for ulike contexts/databaser, eks port 5701 for prod, og setter opp en config i intellij per miljø/database.
 
 
