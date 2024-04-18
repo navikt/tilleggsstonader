@@ -1,0 +1,18 @@
+#!/bin/sh
+#########################################################################################
+###
+### Når man pusher til main så kjøres lint-sjekk og feiler push hvis man mangler linting
+### Dette er for å unngå at man pusher kode som likevel kommer feile bygget.
+###
+#########################################################################################
+
+# Det er mulig å pushe flere brancher samtidig, så sjekken gjøres per branch
+while read local_ref local_sha remote_ref remote_sha
+do
+  #Extract the branch name from the remote reference
+  branch_name=$(git rev-parse --symbolic --abbrev-ref "$remote_ref")
+
+  if [ "$branch_name" = "main" ]; then
+      ./gradlew spotlessCheck
+  fi
+done
