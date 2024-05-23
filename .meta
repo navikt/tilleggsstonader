@@ -10,6 +10,7 @@
     "tilleggsstonader-slackbot": "git@github.com:navikt/tilleggsstonader-slackbot",
     "tilleggsstonader-soknad": "git@github.com:navikt/tilleggsstonader-soknad.git",
     "tilleggsstonader-soknad-api": "git@github.com:navikt/tilleggsstonader-soknad-api",
-    "tilleggsstonader-brev-sanity": "git@github.com:navikt/tilleggsstonader-brev-sanity"
+    "tilleggsstonader-brev-sanity": "git@github.com:navikt/tilleggsstonader-brev-sanity",
+    "tilleggsstonader-klage": "git@github.com:navikt/tilleggsstonader-klage"
   }
 }

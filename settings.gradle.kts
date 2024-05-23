@@ -17,3 +17,5 @@ includeBuild("tilleggsstonader-soknad")
 includeBuild("tilleggsstonader-soknad-api")
 
 includeBuild("tilleggsstonader-brev-sanity")
+
+includeBuild("tilleggsstonader-klage")

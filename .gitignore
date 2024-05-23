@@ -1,5 +1,6 @@
 .idea
 .gradle
+.ds_store
 
 build
 
@@ -16,3 +17,4 @@ tilleggsstonader-*
 /tilleggsstonader-soknad-api/
 /tilleggsstonader-brev-sanity/
 /tilleggsstonader-htmlify/
+/tilleggsstonader-klage/
