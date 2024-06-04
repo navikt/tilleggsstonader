@@ -38,7 +38,7 @@ IntelliJ-oppsett.
 ## Dokumentasjon
 
 ### Nyttige lenker
- - Unleash https://tilleggsstonader-unleash-web.nav.cloud.nais.io 
+ - Unleash https://tilleggsstonader-unleash-web.iap.nav.cloud.nais.io 
 
 ### Developer
 
