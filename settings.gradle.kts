@@ -8,6 +8,8 @@ includeBuild("tilleggsstonader-arena")
 includeBuild("tilleggsstonader-htmlify")
 includeBuild("tilleggsstonader-integrasjoner")
 
+includeBuild("tilleggsstonader-klage")
+
 includeBuild("tilleggsstonader-sak")
 includeBuild("tilleggsstonader-sak-frontend")
 
