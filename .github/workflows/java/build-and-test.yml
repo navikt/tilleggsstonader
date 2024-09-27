@@ -2,12 +2,15 @@ name: Bygg app og kjør tester
 
 on:
   workflow_call:
-    inputs: {}
+    inputs: { }
 
 jobs:
   build:
     name: Bygg, lint og kjør tester
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # Slik at denne jobben også kan kjøre i private repoer
+    concurrency: ${{ github.workflow }}-${{ github.ref }}
     timeout-minutes: 10
 
     steps:
@@ -15,6 +18,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 0 # brukes for å unngå feil i differ i sonar
 
       - name: Sett opp JDK21
         uses: actions/setup-java@v4
