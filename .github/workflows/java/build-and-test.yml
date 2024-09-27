@@ -8,8 +8,6 @@ jobs:
   build:
     name: Bygg, lint og kjør tester
     runs-on: ubuntu-latest
-    permissions:
-      contents: read # Slik at denne jobben også kan kjøre i private repoer
     concurrency: ${{ github.workflow }}-${{ github.ref }}
     timeout-minutes: 10
 
