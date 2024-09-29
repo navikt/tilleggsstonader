@@ -1,5 +1,16 @@
 name: Bygg og deploy til prod og dev
 
+# ------------------------------------------------------------
+# Denne workflowen bygger en Java-applikasjon, pusher docker-image til GAR og
+# deployerer det hele til prod og dev i parallell.
+# 
+# Det er påkrevd at kallende GitHub Actions-jobb setter følgende rettigheter:
+#
+# permissions:
+#   id-token: write   # Kreves for autentisering mot GCP
+#   contents: read    # Kreves for å sjekke repoet hvis det er internt eller privat
+# ------------------------------------------------------------
+
 on:
   workflow_call:
     inputs:
@@ -7,7 +18,7 @@ on:
         description: 'Prod-cluster det skal deployes til'
         type: string
         required: true
-      prod_resource:
+      prod-manifest:
         description: 'Stil til Nais-manifestet for prod'
         type: string
         required: true
@@ -15,7 +26,7 @@ on:
         description: 'Dev-cluster det skal deployes til'
         type: string
         required: true
-      dev-resource:
+      dev-manifest:
         description: 'Sti til Nais-manifestet for dev'
         type: string
         required: true
@@ -23,10 +34,6 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
   cancel-in-progress: true
-
-permissions:
-  contents: "read"
-  id-token: "write"
 
 jobs:
   build:
@@ -73,7 +80,7 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: ${{ inputs.dev-cluster }}
-          RESOURCE: ${{ inputs.dev-resource }}
+          RESOURCE: ${{ inputs.dev-manifest }}
           IMAGE: ${{ needs.build.outputs.image }}
 
   deploy_prod:
@@ -87,11 +94,11 @@ jobs:
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: ${{ inputs.prod-cluster }}
-          RESOURCE: ${{ inputs.prod_resource }}
+          RESOURCE: ${{ inputs.prod-manifest }}
           IMAGE: ${{ needs.build.outputs.image }}
 
       - name: Post deploy failures to Slack
-        if: failure() && contains(input.cluster, 'prod')
+        if: failure() && contains(inputs.cluster, 'prod')
         run: |
           curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
         env:

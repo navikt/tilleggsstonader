@@ -7,8 +7,11 @@ jobs:
   build_and_deploy:
     uses: navikt/tilleggsstonader/.github/workflows/java-build-and-deploy-prod-and-dev.yml@main
     secrets: inherit
+    permissions:
+      contents: "read"
+      id-token: "write"
     with:
       prod-cluster: 'prod-gcp'
-      prod_manifest: '.nais/prod.yml'
+      prod-manifest: '.nais/prod.yml'
       dev-cluster: 'dev-gcp'
-      dev_manifest: '.nais/dev.yml'
+      dev-manifest: '.nais/dev.yml'

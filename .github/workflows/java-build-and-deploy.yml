@@ -1,5 +1,17 @@
 name: Bygg og deploy app til dev
 
+# ------------------------------------------------------------
+# Denne workflowen sjekker bygger en Java-applikasjon, pusher docker-image til GAR og
+# deployerer det hele til et spesifisert cluster, ut i fra et gitt tilhørende Nais-manifest.
+#
+# Det er påkrevd at kallende GitHub Actions-jobb setter følgende rettigheter:
+#
+# permissions:
+#   id-token: write   # Kreves for autentisering mot GCP
+#   contents: read    # Kreves for å sjekke repoet hvis det er internt eller privat
+# ------------------------------------------------------------
+
+
 on:
   workflow_call:
     inputs:
@@ -7,7 +19,7 @@ on:
         description: 'Cluster det skal deployes til'
         required: true
         type: string
-      resource:
+      manifest:
         description: 'Sti til Nais-manifestet'
         required: true
         type: string
@@ -15,10 +27,6 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
   cancel-in-progress: true
-
-permissions:
-  contents: "read"
-  id-token: "write"
 
 jobs:
   build:
@@ -65,7 +73,7 @@ jobs:
           IMAGE: ${{ needs.build.outputs.image }}
 
       - name: Post prod deploy failures to Slack
-        if: failure() && contains(input.cluster, 'prod')
+        if: failure() && contains(inputs.cluster, 'prod')
         run: |
           curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
         env:
