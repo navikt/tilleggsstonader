@@ -17,6 +17,7 @@ on:
 jobs:
   dependencies:
     runs-on: ubuntu-latest
+    concurrency: ${{ github.workflow }}-${{ github.ref }}
     permissions:
       contents: write
     steps:
