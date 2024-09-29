@@ -9,9 +9,9 @@ name: Bygg og deploy til prod og dev
 # Det er påkrevd at kallende GitHub Actions-jobb setter følgende rettigheter:
 #
 # permissions:
-#   contents: "write"        # Kreves av nais/login
-#   id-token: "write"        # Kreves for å skrive sårbarhetsanalyse-rapport
-#   security-events: "write" # Kreves for å pushe resultat av sårbarhetsanalyse til Github Security
+#   id-token: "write"         # Kreves av nais/login
+#   contents: "write"         # Kreves for å skrive sårbarhetsanalyse-rapport
+#   security-events: "write"  # Kreves for å pushe resultat av sårbarhetsanalyse til Github Security
 # ------------------------------------------------------------
 
 on:

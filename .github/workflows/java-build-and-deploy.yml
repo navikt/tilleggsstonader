@@ -7,7 +7,7 @@ name: Bygg og deploy app til dev
 # Det er påkrevd at kallende GitHub Actions-jobb setter følgende rettigheter:
 #
 # permissions:
-#   id-token: write   # Kreves for autentisering mot GCP
+#   id-token: write   # Kreves av nais/login
 #   contents: read    # Trengs bare hvis kallende repoet er private eller internal
 # ------------------------------------------------------------
 
