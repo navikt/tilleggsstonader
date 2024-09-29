@@ -9,8 +9,8 @@ jobs:
     uses: navikt/tilleggsstonader/.github/workflows/java-build-and-deploy.yml@main
     secrets: inherit
     permissions:
-      contents: "read"
-      id-token: "write"
+      contents: "read" # Kan fjernes hvis du kaller jobben fra et offentlig repo
+      id-token: "write" # Kreves av nais/login
     with:
       cluster: 'dev-gcp'
       manifest: '.nais/dev.yml'

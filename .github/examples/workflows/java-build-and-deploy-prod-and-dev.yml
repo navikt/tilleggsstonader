@@ -11,8 +11,9 @@ jobs:
     uses: navikt/tilleggsstonader/.github/workflows/java-build-and-deploy-prod-and-dev.yml@main
     secrets: inherit
     permissions:
-      contents: "read"
-      id-token: "write"
+      contents: "write" # Kreves av nais/login
+      id-token: "write" # Kreves for å skrive sårbarhetsanalyse-rapport
+      security-events: "write" # Kreves for å pushe resultat av sårbarhetsanalyse til Github Security
     with:
       prod-cluster: 'prod-gcp'
       prod-manifest: '.nais/prod.yml'
