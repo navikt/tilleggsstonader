@@ -1,0 +1,73 @@
+name: Bygg og deploy app til dev
+
+on:
+  workflow_call:
+    inputs:
+      cluster:
+        description: 'Cluster det skal deployes til'
+        required: true
+        type: string
+      resource:
+        description: 'Sti til Nais-manifestet'
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: "read"
+  id-token: "write"
+
+jobs:
+  build:
+    name: Bygg, test og push docker-image
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Test and build
+        run: ./gradlew test bootJar -PskipLint
+
+      - uses: nais/docker-build-push@v0
+        id: docker-push
+        with:
+          team: tilleggsstonader
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          byosbom: build/reports/application.cdx.json
+    outputs:
+      image: ${{ steps.docker-push.outputs.image }}
+
+  deploy:
+    name: Deploy til ${{ inputs.cluster }}
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: ${{ inputs.cluster }}
+          RESOURCE: ${{ inputs.resource }}
+          IMAGE: ${{ needs.build.outputs.image }}
+
+      - name: Post prod deploy failures to Slack
+        if: failure() && contains(input.cluster, 'prod')
+        run: |
+          curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
+        env:
+          MESSAGE: "Deploy av feilet"
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

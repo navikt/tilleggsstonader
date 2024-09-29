@@ -1,0 +1,99 @@
+name: Bygg og deploy til prod og dev
+
+on:
+  workflow_call:
+    inputs:
+      prod-cluster:
+        description: 'Prod-cluster det skal deployes til'
+        type: string
+        required: true
+      prod_resource:
+        description: 'Stil til Nais-manifestet for prod'
+        type: string
+        required: true
+      dev-cluster:
+        description: 'Dev-cluster det skal deployes til'
+        type: string
+        required: true
+      dev-resource:
+        description: 'Sti til Nais-manifestet for dev'
+        type: string
+        required: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: "read"
+  id-token: "write"
+
+jobs:
+  build:
+    name: Build, push, and prepare for deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Test and build
+        run: ./gradlew test bootJar -PskipLint
+
+      - name: Generate and output SBOM
+        run: ./gradlew cyclonedxBom
+
+      - uses: nais/docker-build-push@v0
+        id: docker-push
+        with:
+          team: tilleggsstonader
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          byosbom: build/reports/application.cdx.json
+    outputs:
+      image: ${{ steps.docker-push.outputs.image }}
+
+  deploy_dev:
+    name: Deploy til ${{ inputs.prod-cluster }}
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy til ${{ inputs.dev-cluster }}
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: ${{ inputs.dev-cluster }}
+          RESOURCE: ${{ inputs.dev-resource }}
+          IMAGE: ${{ needs.build.outputs.image }}
+
+  deploy_prod:
+    name: Deploy til ${{ inputs.prod-cluster }}
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: ${{ inputs.prod-cluster }}
+          RESOURCE: ${{ inputs.prod_resource }}
+          IMAGE: ${{ needs.build.outputs.image }}
+
+      - name: Post deploy failures to Slack
+        if: failure() && contains(input.cluster, 'prod')
+        run: |
+          curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
+        env:
+          MESSAGE: "Deploy av feilet"
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
