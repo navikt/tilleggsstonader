@@ -69,7 +69,7 @@ jobs:
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: ${{ inputs.cluster }}
-          RESOURCE: ${{ inputs.resource }}
+          RESOURCE: ${{ inputs.manifest }}
           IMAGE: ${{ needs.build.outputs.image }}
 
       - name: Post prod deploy failures to Slack
