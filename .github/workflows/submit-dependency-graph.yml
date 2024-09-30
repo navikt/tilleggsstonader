@@ -1,7 +1,7 @@
 name: Send inn avhengighetsgraf til GitHub Security
 
 # ------------------------------------------------------------
-# Denne workflowen genererer og sender inn en avhengighetsgraf til GitHiub Security,
+# Denne workflowen genererer og sender inn en avhengighetsgraf til GitHub Security,
 # slik at dependabot kan danne et fullstendig bilde av avhengighetene i prosjektet.
 #
 # Det er påkrevd at kallende GitHub Actions-jobb setter følgende rettigheter:

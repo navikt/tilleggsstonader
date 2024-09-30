@@ -49,7 +49,7 @@ jobs:
     name: "Opprett og publiser pakke"
     needs: build
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 6
     steps:
       - name: "Sjekk ut koden"
         uses: actions/checkout@v4
@@ -76,7 +76,7 @@ jobs:
       - name: "Sett opp Gradle"
         uses: gradle/actions/setup-gradle@v4
 
-      - name: "Publiser pakke til GitHiub Packages"
+      - name: "Publiser pakke til GitHub Packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew -Pversion=${{ env.RELEASE_TAG }} publish
