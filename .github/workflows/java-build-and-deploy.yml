@@ -7,8 +7,10 @@ name: Bygg og deploy app til angitt miljø
 # Det er påkrevd at kallende GitHub Actions-jobb setter følgende rettigheter:
 #
 # permissions:
-#   id-token: write   # Kreves av nais/login
-#   contents: read    # Trengs bare hvis kallende repoet er private eller internal
+#  contents: write         # Kreves av nais/login
+#  id-token: write         # Kreves for å skrive sårbarhetsanalyse-rapport
+#  security-events: write  # Kreves for å pushe resultat av sårbarhetsanalyse til Github Security
+
 # ------------------------------------------------------------
 
 
@@ -23,6 +25,11 @@ on:
         description: 'Sti til Nais-manifestet'
         required: true
         type: string
+      skip-checks:
+        description: "Hopp over testing og linting"
+        type: boolean
+        required: false
+        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
@@ -45,10 +52,16 @@ jobs:
           java-version: '21'
           cache: 'gradle'
 
-      - name: Test and build
-        run: ./gradlew test bootJar -PskipLint
+      - name: Test og bygg app
+        if: ${{ inputs.skip-checks == false }}
+        run: ./gradlew test bootJar
 
-      - uses: nais/docker-build-push@v0
+      - name: Bygg app uten å kjøre testing eller linting
+        if: ${{ inputs.skip-checks == true }}
+        run: ./gradlew bootJar
+
+      - name: "Push image til GAR med SBOM"
+        uses: nais/docker-build-push@v0
         id: docker-push
         with:
           team: tilleggsstonader

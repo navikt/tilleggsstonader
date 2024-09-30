@@ -14,3 +14,4 @@ jobs:
     with:
       cluster: 'dev-gcp'
       manifest: '.nais/dev.yml'
+      skip-checks: false
