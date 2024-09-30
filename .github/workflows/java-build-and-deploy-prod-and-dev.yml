@@ -40,7 +40,7 @@ concurrency:
 
 jobs:
   build:
-    name: B
+    name: Bygg, test og last opp docker-image
     runs-on: ubuntu-latest
     timeout-minutes: 7
     steps:
@@ -61,7 +61,8 @@ jobs:
       - name: Test, bygg og generer SBOM
         run: ./gradlew test bootJar -PskipLint
 
-      - uses: nais/docker-build-push@v0
+      - name: Last opp docker-image
+        uses: nais/docker-build-push@v0
         id: docker-push
         with:
           team: tilleggsstonader
@@ -72,7 +73,7 @@ jobs:
       image: ${{ steps.docker-push.outputs.image }}
 
   deploy_dev:
-    name: Deploy til ${{ inputs.prod-cluster }}
+    name: Deploy til ${{ inputs.dev-cluster }}
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 6
