@@ -32,9 +32,11 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      - uses: gradle/actions/setup-gradle@v4
-        with:
-          arguments: build -PskipLint
+      - name: Sett opp Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Test, bygg og generer SBOM
+        run: ./gradlew build -PskipLint
 
       - name: Post build failures to Slack
         if: failure()
@@ -44,18 +46,15 @@ jobs:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   release:
-    name: "Opprett utgivelse"
+    name: "Opprett og publiser pakke"
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 3
-    permissions:
-      contents: write
-      packages: write
     steps:
       - name: "Sjekk ut koden"
         uses: actions/checkout@v4
 
-      - name: "Sett utgivelsestag"
+      - name: "Sett versjonstag"
         run: |
           export TAG_NAME="$(TZ="Europe/Oslo" date +%Y.%m.%d-%H.%M).$(git rev-parse --short=12 HEAD)"
           echo "RELEASE_TAG=$TAG_NAME" >> $GITHUB_ENV
@@ -66,7 +65,7 @@ jobs:
       #    text="$(git --no-pager log $(git describe --tags --abbrev=0)..HEAD --pretty=format:"%h %s")"
       #    echo "::set-output name=CHANGELOG::$text"
 
-      - name: "Opprett utgivelse"
+      - name: "Publiser pakke"
         uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ env.RELEASE_TAG }}
@@ -74,12 +73,13 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: "Publiser utgivelse"
+      - name: "Sett opp Gradle"
         uses: gradle/actions/setup-gradle@v4
+
+      - name: "Publiser pakke til GitHiub Packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          arguments: -Pversion=${{ env.RELEASE_TAG }} publish
+        run: ./gradlew -Pversion=${{ env.RELEASE_TAG }} publish
 
       - name: "Post eventuelle feil til Slack"
         if: failure()
