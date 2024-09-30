@@ -1,0 +1,58 @@
+name: Bygg og deploy app
+
+on:
+  workflow_call:
+    inputs:
+      cluster:
+        description: 'Cluster det skal deployes til'
+        required: true
+        type: string
+      manifest:
+        description: 'Sti til Nais-manifestet'
+        required: true
+        type: string
+
+jobs:
+  build:
+    name: Bygg og push docker-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sjekk ut koden
+        uses: actions/checkout@v4
+
+      - name: Sett opp Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "yarn"
+          registry-url: "https://npm.pkg.github.com"
+
+      - name: Installer avhengigheter
+        run: yarn --prefer-offline --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+
+      - name: Bygg app
+        run: yarn build
+
+      - name: Push image
+        uses: nais/docker-build-push@v0
+        id: docker-push
+        with:
+          team: tilleggsstonader
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+    outputs:
+      image: ${{ steps.docker-push.outputs.image }}
+
+  deploy:
+    name: Deploy til ${{ inputs.cluster }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: ${{ inputs.cluster }}
+          RESOURCE: ${{ inputs.manifest }}
+          IMAGE: ${{ needs.build.outputs.image }}

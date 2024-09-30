@@ -1,0 +1,17 @@
+name: Bygg og deploy app til dev
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: "Bygger app og deployer til dev-gcp"
+    uses: navikt/tilleggsstonader/.github/workflows/ts-build-and-deploy.yml@main
+    with:
+      cluster: "dev-gcp"
+      manifest: ".nais/dev.yml"
+    secrets: inherit
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
