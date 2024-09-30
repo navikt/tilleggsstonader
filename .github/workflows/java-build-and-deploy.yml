@@ -45,12 +45,15 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Set up JDK
+      - name: Sett opp JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
           cache: 'gradle'
+
+      - name: Sett opp Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Test og bygg app
         if: ${{ inputs.skip-checks == false }}
@@ -60,7 +63,7 @@ jobs:
         if: ${{ inputs.skip-checks == true }}
         run: ./gradlew bootJar
 
-      - name: "Push image til GAR med SBOM"
+      - name: Push image til GAR
         uses: nais/docker-build-push@v0
         id: docker-push
         with:
