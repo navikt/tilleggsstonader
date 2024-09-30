@@ -11,5 +11,5 @@ jobs:
     uses: navikt/tilleggsstonader/.github/workflows/java-build-and-publish-release.yml@main
     secrets: inherit
     permissions:
-      contents: "write"
-      packages: "write"
+      contents: write
+      packages: write

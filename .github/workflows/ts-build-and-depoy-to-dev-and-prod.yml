@@ -12,7 +12,6 @@ name: Bygg og deploy til prod og dev
 #
 # permissions:
 #   id-token: write  # Trengs for deploy til GCP
-#   packages: write  # Usikker på om denne egentlig kreves 🤔
 # ------------------------------------------------------------
 
 on:
