@@ -1,4 +1,4 @@
-name: Bygg og deploy app til dev
+name: Bygg og deploy app til angitt miljø
 
 # ------------------------------------------------------------
 # Denne workflowen sjekker bygger en Java-applikasjon, pusher docker-image til GAR og

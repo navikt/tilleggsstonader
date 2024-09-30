@@ -1,4 +1,4 @@
-name: Opprett og publiser leveranse på GitHub Packages
+name: Bygg og publiser pakke på GitHub Packages
 on:
   workflow_call:
     inputs:
