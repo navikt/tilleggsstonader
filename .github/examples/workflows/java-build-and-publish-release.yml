@@ -1,0 +1,15 @@
+name: Oppretter og publiser leveranse
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build_and_deploy:
+    name: "Opprett og publiser leveranse på GitHub Packages"
+    uses: navikt/tilleggsstonader/.github/workflows/java-build-and-publish-release.yml@main
+    secrets: inherit
+    permissions:
+      contents: "write"
+      packages: "write"
