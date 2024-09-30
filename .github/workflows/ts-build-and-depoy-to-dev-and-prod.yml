@@ -1,0 +1,119 @@
+name: Bygg og deploy til prod og dev
+
+# ------------------------------------------------------------
+# Denne workflowen bygger en TypeScript-applikasjon, pusher docker-image til GAR og
+# deployerer det hele til et prod- og et dev-miljø.
+#
+# Forutsetninger: Repoet som kaller denne jobben må ha definert to scripts:
+#  - "yarn ci": Henter ned alle avhengigetene som prosjektet trenger
+#  - "yarn build": Bygger prod-versjon av appen
+#
+# Kallende GitHub Actions-jobb må også sette følgende rettigheter:
+#
+# permissions:
+#   id-token: write  # Trengs for deploy til GCP
+#   packages: write  # Usikker på om denne egentlig kreves 🤔
+# ------------------------------------------------------------
+
+on:
+  workflow_call:
+    inputs:
+      prod-cluster:
+        description: 'Prod-cluster det skal deployes til'
+        type: string
+        required: true
+      prod-manifest:
+        description: 'Stil til Nais-manifestet for prod'
+        type: string
+        required: true
+      dev-cluster:
+        description: 'Dev-cluster det skal deployes til'
+        type: string
+        required: true
+      dev-manifest:
+        description: 'Sti til Nais-manifestet for dev'
+        type: string
+        required: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and push Docker container
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Sjekk ut koden
+        uses: actions/checkout@v4
+
+      - name: Sett opp Node 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: yarn
+          registry-url: "https://npm.pkg.github.com"
+
+      - name: Installer avhengigheter
+        run: yarn ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+
+      - name: Bygg app
+        run: yarn build
+
+      - name: Last opp docker-image
+        uses: nais/docker-build-push@v0
+        id: docker-push
+        with:
+          team: tilleggsstonader
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+
+      - name: Post byggefeil til Slack
+        if: failure()
+        run: |
+          curl -X POST --data "{\"text\": \"Build av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
+        env:
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  deploy_dev:
+    name: Deploy til ${{ inputs.dev-cluster }}
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Sjekk ut koden
+        uses: actions/checkout@v4
+
+      - name: Deploy til ${{ inputs.dev-cluster }}
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: ${{ inputs.dev-cluster }}
+          RESOURCE: ${{ inputs.dev-manifest }}
+          IMAGE: ${{ needs.build.outputs.image }}
+
+  deploy_prod:
+    name: Deploy til ${{ inputs.prod-cluster }}
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Sjekk ut koden
+        uses: actions/checkout@v4
+
+      - name: Deploy til ${{ inputs.prod-cluster }}
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: ${{ inputs.prod-cluster }}
+          RESOURCE: ${{ inputs.prod-manifest }}
+          IMAGE: ${{ needs.build.outputs.image }}
+
+      - name: Post deployeringsfeil til Slack
+        if: failure()
+        run: |
+          curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
+        env:
+          MESSAGE: "Deploy av feilet"
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
