@@ -12,6 +12,5 @@ jobs:
       manifest: ".nais/dev.yml"
     secrets: inherit
     permissions:
-      contents: read
       id-token: write
       packages: write

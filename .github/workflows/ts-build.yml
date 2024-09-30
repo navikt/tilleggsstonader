@@ -1,5 +1,13 @@
 name: "Bygg app"
 
+# ------------------------------------------------------------
+# Denne workflowen bygger en TypeScript-applikasjon
+#
+# Forutsetninger: Repoet som kaller denne jobben må ha definert to scripts:
+#  - yarn ci: Henter ned alle avhengigetene som prosjektet trenger
+#  - yarn build: Bygger prod-versjon av appen
+# ------------------------------------------------------------
+
 on:
   workflow_call:
     inputs: { }
@@ -16,7 +24,7 @@ jobs:
           cache: yarn
           registry-url: "https://npm.pkg.github.com"
       - name: Installer avhengigheter
-        run: yarn --prefer-offline --frozen-lockfile
+        run: yarn ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Bygg app

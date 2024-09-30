@@ -1,5 +1,20 @@
 name: Bygg og deploy app
 
+# ------------------------------------------------------------
+# Denne workflowen bygger en TypeScript-applikasjon, pusher docker-image til GAR og
+# deployerer det hele til et valgfritt miljø.
+#
+# Forutsetninger: Repoet som kaller denne jobben må ha definert to scripts:
+#  - yarn ci: Henter ned alle avhengigetene som prosjektet trenger
+#  - yarn build: Bygger prod-versjon av appen
+#
+# Kallende GitHub Actions-jobb må sette følgende rettigheter:
+#
+# permissions:
+#   id-token: write  # Trengs for deploy til GCP
+#   packages: write  # Usikker på om denne egentlig kreves 🤔
+# ------------------------------------------------------------
+
 on:
   workflow_call:
     inputs:
@@ -12,10 +27,15 @@ on:
         required: true
         type: string
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   build:
-    name: Bygg og push docker-image
+    name: Bygg og last opp docker-image
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
       - name: Sjekk ut koden
         uses: actions/checkout@v4
@@ -28,14 +48,14 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
 
       - name: Installer avhengigheter
-        run: yarn --prefer-offline --frozen-lockfile
+        run: yarn ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 
       - name: Bygg app
         run: yarn build
 
-      - name: Push image
+      - name: Last opp docker-image
         uses: nais/docker-build-push@v0
         id: docker-push
         with:
@@ -50,8 +70,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v2
+      - name: Sjekk ut koden
+        uses: actions/checkout@v4
+
+      - name: Deploy til ${{ inputs.cluster }}
+        uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: ${{ inputs.cluster }}
           RESOURCE: ${{ inputs.manifest }}
