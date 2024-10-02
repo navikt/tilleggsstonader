@@ -69,6 +69,12 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           byosbom: build/reports/application.cdx.json
+      - name: Post build failures to Slack
+        if: failure()
+        run: |
+          curl -X POST --data "{\"text\": \"Build av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
+        env:
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     outputs:
       image: ${{ steps.docker-push.outputs.image }}
 
@@ -86,6 +92,12 @@ jobs:
           CLUSTER: ${{ inputs.dev-cluster }}
           RESOURCE: ${{ inputs.dev-manifest }}
           IMAGE: ${{ needs.build.outputs.image }}
+      - name: Post deploy failures to Slack
+        if: failure()
+        run: |
+          curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY til dev feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
+        env:
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   deploy_prod:
     name: Deploy til ${{ inputs.prod-cluster }}
@@ -102,11 +114,10 @@ jobs:
           IMAGE: ${{ needs.build.outputs.image }}
 
       - name: Post deploy failures to Slack
-        if: failure() && contains(inputs.cluster, 'prod')
+        if: failure()
         run: |
-          curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
+          curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY til prod feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
         env:
-          MESSAGE: "Deploy av feilet"
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   trivy-scan:
