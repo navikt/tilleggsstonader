@@ -106,7 +106,6 @@ jobs:
         run: |
           curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
         env:
-          MESSAGE: "Deploy av feilet"
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   trivy-scan:
