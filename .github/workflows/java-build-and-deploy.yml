@@ -89,7 +89,7 @@ jobs:
           IMAGE: ${{ needs.build.outputs.image }}
 
       - name: Post prod deploy failures to Slack
-        if: failure() && contains(inputs.cluster, 'prod')
+        if: failure()
         run: |
           curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
         env:
