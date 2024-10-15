@@ -56,8 +56,10 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Sjekk verdien av skip-checks
-        run:
-          echo "skip-checks er: ${{ github.event.inputs.skip-checks }}"
+        env:
+          SKIP_CHECKS: ${{ github.event.inputs.skip-checks }}
+        run: |
+          echo "skip-checks er: $SKIP_CHECKS"
 
       - name: Test og bygg app
         if: ${{ inputs.skip-checks == false }}
