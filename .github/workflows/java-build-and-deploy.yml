@@ -55,19 +55,12 @@ jobs:
       - name: Sett opp Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Sjekk verdien av skip-checks
-        env:
-          EVENT_SKIP_CHECKS: ${{ github.event.inputs.skip-checks }}
-          SKIP_CHECKS: ${{ inputs.skip-checks }}
-        run: |
-          echo "Debug: inputs.skip-checks er: $SKIP_CHECKS, github.event.inputs.skip-checks er: $EVENT_SKIP_CHECKS"
-
       - name: Test og bygg app
-        if: ${{ inputs.skip-checks == false }}
+        if: ${{ github.event.inputs.skip-checks == false }}
         run: ./gradlew test bootJar
 
       - name: Bygg app uten å kjøre testing eller linting
-        if: ${{ inputs.skip-checks == true }}
+        if: ${{ github.event.inputs.skip-checks == true }}
         run: ./gradlew bootJar
 
       - name: Push image til GAR
