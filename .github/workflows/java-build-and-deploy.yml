@@ -56,12 +56,12 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Test og bygg app
-        if: ${{ github.event.inputs.skip-checks == false }}
+        # if: ${{ github.event.inputs.skip-checks == 'false' }}
         run: ./gradlew test bootJar
 
-      - name: Bygg app uten å kjøre testing eller linting
-        if: ${{ github.event.inputs.skip-checks == true }}
-        run: ./gradlew bootJar
+      #- name: Bygg app uten å kjøre testing eller linting
+      #  if: ${{ github.event.inputs.skip-checks == 'true' }}
+      #  run: ./gradlew bootJar
 
       - name: Push image til GAR
         uses: nais/docker-build-push@v0
