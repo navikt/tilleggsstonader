@@ -57,9 +57,10 @@ jobs:
 
       - name: Sjekk verdien av skip-checks
         env:
-          SKIP_CHECKS: ${{ github.event.inputs.skip-checks }}
+          EVENT_SKIP_CHECKS: ${{ github.event.inputs.skip-checks }}
+          SKIP_CHECKS: ${{ inputs.skip-checks }}
         run: |
-          echo "skip-checks er: $SKIP_CHECKS"
+          echo "Debug: inputs.skip-checks er: $SKIP_CHECKS, github.event.inputs.skip-checks er: $EVENT_SKIP_CHECKS"
 
       - name: Test og bygg app
         if: ${{ inputs.skip-checks == false }}
