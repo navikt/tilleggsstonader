@@ -87,6 +87,7 @@ Repoene som er inkludert i dette meta-repoet er
 -   [tilleggsstonader-docs](https://github.com/navikt/tilleggsstonader-docs)
 -   [tilleggsstonader-htmlify](https://github.com/navikt/tilleggsstonader-htmlify)
 -   [tilleggsstonader-integrasjoner](https://github.com/navikt/tilleggsstonader-integrasjoner)
+-   [tilleggsstonader-klage](https://github.com/navikt/tilleggsstonader-klage)
 -   [tilleggsstonader-kontrakter](https://github.com/navikt/tilleggsstonader-kontrakter)
 -   [tilleggsstonader-libs](https://github.com/navikt/tilleggsstonader-libs)
 -   [tilleggsstonader-sak](https://github.com/navikt/tilleggsstonader-sak)
@@ -94,4 +95,3 @@ Repoene som er inkludert i dette meta-repoet er
 -   [tilleggsstonader-slackbot](https://github.com/navikt/tilleggsstonader-slackbot)
 -   [tilleggsstonader-soknad](https://github.com/navikt/tilleggsstonader-soknad)
 -   [tilleggsstonader-soknad-api](https://github.com/navikt/tilleggsstonader-soknad-api)
--   [tilleggsstonader-klage](https://github.com/navikt/tilleggsstonader-klage)
