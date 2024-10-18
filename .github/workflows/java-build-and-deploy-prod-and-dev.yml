@@ -141,8 +141,6 @@ jobs:
 
       - name: Kjør Trivy sårbarhetssscanner
         uses: aquasecurity/trivy-action@master
-        env:
-          TRIVY_JAVA_DB_REPOSITORY: "public.ecr.aws/aquasecurity/trivy-java-db:1"
         with:
           image-ref: '${{ needs.build.outputs.image }}'
           format: 'sarif'
