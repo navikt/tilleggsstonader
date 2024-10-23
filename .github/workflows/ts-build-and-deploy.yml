@@ -35,7 +35,7 @@ jobs:
   build:
     name: Bygg og last opp docker-image
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 5
     steps:
       - name: Sjekk ut koden
         uses: actions/checkout@v4
