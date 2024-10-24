@@ -124,6 +124,7 @@ jobs:
     name: Scan docker-image med Trivy
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write # to write sarif
       security-events: write # push sarif to github security
