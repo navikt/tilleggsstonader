@@ -44,7 +44,6 @@ IntelliJ-oppsett.
 
 - Set opp pre-push hooks for kotlin-backends
   - Kjør `./dev/setupProject.sh` (må kjøres fra `./tilleggsstonader`)
--   [Gradle](./doc/dev/gradle.md)
 
 ### Hente nye repoen som eg lagt til
 
