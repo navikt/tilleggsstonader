@@ -66,8 +66,6 @@ jobs:
         id: docker-push
         with:
           team: tilleggsstonader
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           byosbom: build/reports/application.cdx.json
       - name: Post build failures to Slack
         if: failure()
@@ -133,8 +131,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: nais/login@v0
         with:
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           team: tilleggsstonader
 
       - name: Hent ned docker-image
