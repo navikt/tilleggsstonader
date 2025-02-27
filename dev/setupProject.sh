@@ -7,6 +7,7 @@
 # -s: symbolic link
 ln -nsi "../../../dev/git-hooks-backend/pre-push" "tilleggsstonader-arena/.git/hooks/pre-push"
 ln -nsi "../../../dev/git-hooks-backend/pre-push" "tilleggsstonader-integrasjoner/.git/hooks/pre-push"
+ln -nsi "../../../dev/git-hooks-backend/pre-push" "tilleggsstonader-klage/.git/hooks/pre-push"
 ln -nsi "../../../dev/git-hooks-backend/pre-push" "tilleggsstonader-kontrakter/.git/hooks/pre-push"
 ln -nsi "../../../dev/git-hooks-backend/pre-push" "tilleggsstonader-libs/.git/hooks/pre-push"
 ln -nsi "../../../dev/git-hooks-backend/pre-push" "tilleggsstonader-sak/.git/hooks/pre-push"
