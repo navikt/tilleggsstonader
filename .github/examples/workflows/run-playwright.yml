@@ -1,0 +1,11 @@
+name: Kjør Playwright-tester
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  playwright:
+    name: Kjører Playwright-tester
+    uses: navikt/tilleggsstonader/.github/workflows/run-playwright.yml@main
+    secrets: inherit
