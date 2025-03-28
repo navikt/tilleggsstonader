@@ -33,6 +33,11 @@ on:
         description: 'Sti til Nais-manifestet for dev'
         type: string
         required: true
+      node-version:
+        description: 'Node-versjon'
+        type: string
+        required: false
+        default: '18'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
@@ -47,10 +52,10 @@ jobs:
       - name: Sjekk ut koden
         uses: actions/checkout@v4
 
-      - name: Sett opp Node 18
+      - name: Sett opp Node ${{ inputs.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: ${{ inputs.node-version }}
           cache: yarn
           registry-url: "https://npm.pkg.github.com"
 
