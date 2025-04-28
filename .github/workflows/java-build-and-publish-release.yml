@@ -49,7 +49,7 @@ jobs:
     name: "Opprett og publiser pakke"
     needs: build
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 8
     steps:
       - name: "Sjekk ut koden"
         uses: actions/checkout@v4
