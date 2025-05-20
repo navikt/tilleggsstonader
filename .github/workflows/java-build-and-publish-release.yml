@@ -73,6 +73,12 @@ jobs:
           draft: false
           prerelease: false
 
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle'
+
       - name: "Sett opp Gradle"
         uses: gradle/actions/setup-gradle@v4
 
