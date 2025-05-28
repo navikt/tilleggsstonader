@@ -18,6 +18,8 @@ jobs:
       - uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: ${{ inputs.cluster }}
-          RESOURCE: .nais/metabase-views/dataset.yml
+          RESOURCE: >-
+            .nais/metabase-views/dataset.yml,
+            .nais/metabase-views/saksbehandling.yml
           VAR: project=${{ inputs.project }}
           PRINT_PAYLOAD: true
