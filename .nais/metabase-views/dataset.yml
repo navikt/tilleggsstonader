@@ -13,4 +13,4 @@ spec:
   resourceID: metabase_views
   projectRef:
     external: {{project}}
-  location: EU
+  location: europe-north1
