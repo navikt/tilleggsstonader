@@ -7,11 +7,12 @@ metadata:
     team: tilleggsstonader
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/project-id: {{project}}
     cnrm.cloud.google.com/state-into-spec: merge
 spec:
   resourceID: saksbehandling
   description: "View som viser behandlinger med tilhørende fagsak"
+  projectRef:
+    external: {{project}}
   datasetRef:
     external: metabase_views
   view:
