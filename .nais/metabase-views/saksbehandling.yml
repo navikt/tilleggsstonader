@@ -30,5 +30,5 @@ spec:
              fagsak.stonadstype as stonadstype,
              b.opprettet_tid,
              b.endret_tid
-      FROM behandling b
-               JOIN fagsak on b.fagsak_id = fagsak.id;
+      FROM datastream_tilleggsstonader_sak.public_behandling b
+               JOIN datastream_tilleggsstonader_sak.public_fagsak on b.fagsak_id = fagsak.id;
