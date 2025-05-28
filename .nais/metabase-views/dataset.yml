@@ -11,5 +11,5 @@ metadata:
     cnrm.cloud.google.com/state-into-spec: merge
 
 spec:
-  resourceID: metabase-views
+  resourceID: metabase_views
   location: EU
