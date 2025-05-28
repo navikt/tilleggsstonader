@@ -11,8 +11,6 @@ metadata:
 spec:
   resourceID: saksbehandling
   description: "View som viser behandlinger med tilhørende fagsak"
-  projectRef:
-    external: {{project}}
   datasetRef:
     external: metabase_views
   view:
