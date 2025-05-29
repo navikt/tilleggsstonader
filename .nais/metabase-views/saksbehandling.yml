@@ -31,4 +31,4 @@ spec:
              b.opprettet_tid,
              b.endret_tid
       FROM datastream_tilleggsstonader_sak.public_behandling b
-               JOIN datastream_tilleggsstonader_sak.public_fagsak on b.fagsak_id = fagsak.id;
+               JOIN datastream_tilleggsstonader_sak.public_fagsak fagsak on b.fagsak_id = fagsak.id;
