@@ -12,6 +12,7 @@
     "tilleggsstonader-soknad-api": "git@github.com:navikt/tilleggsstonader-soknad-api",
     "tilleggsstonader-brev-sanity": "git@github.com:navikt/tilleggsstonader-brev-sanity",
     "tilleggsstonader-klage": "git@github.com:navikt/tilleggsstonader-klage",
-    "tilleggsstonader-docs": "git@github.com:navikt/tilleggsstonader-docs"
+    "tilleggsstonader-docs": "git@github.com:navikt/tilleggsstonader-docs",
+    "tilleggsstonader-version-catalog": "https://github.com/navikt/tilleggsstonader-version-catalog"
   }
 }

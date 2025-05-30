@@ -1,5 +1,7 @@
 rootProject.name = "tilleggsstonader"
 
+includeBuild("tilleggsstonader-version-catalog")
+
 includeBuild("tilleggsstonader-kontrakter")
 includeBuild("tilleggsstonader-libs")
 

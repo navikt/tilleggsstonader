@@ -94,3 +94,4 @@ Repoene som er inkludert i dette meta-repoet er
 -   [tilleggsstonader-slackbot](https://github.com/navikt/tilleggsstonader-slackbot)
 -   [tilleggsstonader-soknad](https://github.com/navikt/tilleggsstonader-soknad)
 -   [tilleggsstonader-soknad-api](https://github.com/navikt/tilleggsstonader-soknad-api)
+-   [tilleggsstonader-version-catalog](https://github.com/navikt/tilleggsstonader-version-catalog)
