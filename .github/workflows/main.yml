@@ -16,3 +16,10 @@ jobs:
     with:
       cluster: dev-gcp
       project: tilleggsstonader-dev-371d
+
+  deploy-bigquery-resources-prod:
+    uses: ./.github/workflows/deploy-bigquery-resources.yml
+    secrets: inherit
+    with:
+      cluster: prod-gcp
+      project: tilleggsstonader-prod-58d8
