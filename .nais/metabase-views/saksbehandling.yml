@@ -1,7 +1,7 @@
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
 metadata:
-  name: saksbehandling
+  name: view_saksbehandling
   namespace: tilleggsstonader
   labels:
     team: tilleggsstonader
@@ -13,7 +13,7 @@ spec:
   resourceID: saksbehandling
   description: "View som viser behandlinger med tilhørende fagsak"
   datasetRef:
-    external: metabase_views
+    external: datastream_tilleggsstonader_sak
   view:
     useLegacySql: false
     query: >-
