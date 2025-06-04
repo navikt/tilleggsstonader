@@ -1,7 +1,7 @@
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
 metadata:
-  name: view_saksbehandling
+  name: view-saksbehandling
   namespace: tilleggsstonader
   labels:
     team: tilleggsstonader
@@ -10,7 +10,7 @@ metadata:
     cnrm.cloud.google.com/state-into-spec: merge
     cnrm.cloud.google.com/project-id: {{project}}
 spec:
-  resourceID: saksbehandling
+  resourceID: view_saksbehandling
   description: "View som viser behandlinger med tilhørende fagsak"
   datasetRef:
     external: datastream_tilleggsstonader_sak
