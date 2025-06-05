@@ -20,8 +20,8 @@ spec:
       SELECT
         v.behandling_id,
         JSON_VALUE(v.data, '$.type') AS type,
-        arsak,
+        JSON_VALUE(arsak_json) AS arsak,
       FROM
         datastream_tilleggsstonader_sak.public_vedtak v,
-        UNNEST(JSON_EXTRACT_ARRAY(v.data, '$.årsaker')) AS arsak
-        WHERE type = 'AVSLAG';
+        UNNEST(JSON_EXTRACT_ARRAY(v.data, '$.årsaker')) AS arsak_json
+      WHERE type = 'AVSLAG';
