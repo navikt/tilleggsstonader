@@ -17,18 +17,20 @@ spec:
   view:
     useLegacySql: false
     query: >-
-      SELECT b.type,
-             b.status,
-             b.steg,
-             b.resultat,
-             b.arsak,
-             b.henlagt_arsak,
-             b.vedtakstidspunkt,
-             b.revurder_fra,
-             b.opprettet_av,
-             b.nye_opplysninger_kilde,
-             fagsak.stonadstype as stonadstype,
-             b.opprettet_tid,
-             b.endret_tid
+      SELECT 
+        b.id as behandling_id,
+        b.type,
+        b.status,
+        b.steg,
+        b.resultat,
+        b.arsak,
+        b.henlagt_arsak,
+        b.vedtakstidspunkt,
+        b.revurder_fra,
+        b.opprettet_av,
+        b.nye_opplysninger_kilde,
+        fagsak.stonadstype as stonadstype,
+        b.opprettet_tid,
+        b.endret_tid
       FROM datastream_tilleggsstonader_sak.public_behandling b
-               JOIN datastream_tilleggsstonader_sak.public_fagsak fagsak on b.fagsak_id = fagsak.id;
+      JOIN datastream_tilleggsstonader_sak.public_fagsak fagsak on b.fagsak_id = fagsak.id;
