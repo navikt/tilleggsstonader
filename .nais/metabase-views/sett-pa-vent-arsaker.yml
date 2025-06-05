@@ -18,13 +18,9 @@ spec:
     useLegacySql: false
     query: >-
       SELECT
-          pa_vent.behandling_id,
-          pa_vent.steg,
-          pa_vent.endret_tid,
-          f.stonadstype,
+          b.behandling_id,
+          b.steg,
+          b.endret_tid,
           JSON_VALUE(arsaker_json) as arsak,
-      FROM `datastream_tilleggsstonader_sak.public_behandlingshistorikk` pa_vent,
-           UNNEST(JSON_EXTRACT_ARRAY(pa_vent.metadata, '$.årsaker')) as arsaker_json
-      JOIN datastream_tilleggsstonader_sak.public_behandling b on b.id = pa_vent.behandling_id
-      JOIN datastream_tilleggsstonader_sak.public_fagsak f on b.fagsak_id = f.id
-      WHERE pa_vent.utfall = 'SATT_PÅ_VENT';
+      FROM `datastream_tilleggsstonader_sak.public_behandlingshistorikk` b,
+           UNNEST(JSON_EXTRACT_ARRAY(b.metadata, '$.årsaker')) as arsaker_json
