@@ -11,7 +11,7 @@ metadata:
     cnrm.cloud.google.com/project-id: {{project}}
 spec:
   resourceID: view_avslag_arsaker
-  description: "View som viser behandlinger med tilhørende fagsak"
+  description: "View som viser én avslagsårsak per rad. Det kan være flere rader per behandling."
   datasetRef:
     external: datastream_tilleggsstonader_sak
   view:
