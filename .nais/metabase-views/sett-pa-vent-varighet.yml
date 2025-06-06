@@ -1,0 +1,45 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: view-sett-pa-vent-varighet
+  namespace: tilleggsstonader
+  labels:
+    team: tilleggsstonader
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/project-id: {{project}}
+spec:
+  resourceID: view_sett_pa_vent_varighet
+  description: "View som regner ut hvor lenge behandlingene ligger på vent før de åpnes igjen."
+  datasetRef:
+    external: datastream_tilleggsstonader_sak
+  view:
+    useLegacySql: false
+    query: >-
+      WITH relevante_hendelser AS (
+        SELECT
+          behandling_id,
+          utfall,
+          endret_tid,
+          ROW_NUMBER() OVER (PARTITION BY behandling_id ORDER BY endret_tid) AS rn
+        FROM datastream_tilleggsstonader_sak.public_behandlingshistorikk
+        WHERE utfall IN ('SATT_PÅ_VENT', 'TATT_AV_VENT')
+      ),
+
+      parvise_hendelser AS (
+        SELECT
+          behandling_id,
+          endret_tid AS satt_pa_vent_tid,
+          LEAD(endret_tid) OVER (PARTITION BY behandling_id ORDER BY rn) AS tatt_av_vent_tid,
+          utfall
+        FROM relevante_hendelser
+      )
+
+      SELECT
+        behandling_id,
+        SUM(TIMESTAMP_DIFF(tatt_av_vent_tid, satt_pa_vent_tid, SECOND)) AS total_tid_pa_vent_i_sekunder,
+      FROM parvise_hendelser
+      WHERE utfall = 'SATT_PÅ_VENT'
+        AND tatt_av_vent_tid IS NOT NULL
+      GROUP BY behandling_id;
