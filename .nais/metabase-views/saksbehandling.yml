@@ -27,7 +27,6 @@ spec:
         b.henlagt_arsak,
         b.vedtakstidspunkt,
         b.revurder_fra,
-        b.opprettet_av,
         b.nye_opplysninger_kilde,
         fagsak.stonadstype as stonadstype,
         b.opprettet_tid,
