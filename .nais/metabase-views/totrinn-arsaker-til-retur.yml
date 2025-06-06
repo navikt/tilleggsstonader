@@ -1,0 +1,26 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: view-totrinn-arsaker-til-retur
+  namespace: tilleggsstonader
+  labels:
+    team: tilleggsstonader
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/project-id: {{project}}
+spec:
+  resourceID: view_totrinn_arsaker_til_retur
+  description: "View som viser årsakene til at beslutter returerer behandlinger. Det kan være flere årsaker per behandling."
+  datasetRef:
+    external: datastream_tilleggsstonader_sak
+  view:
+    useLegacySql: false
+    query: >-
+      SELECT
+        bh.behandling_id,
+        JSON_VALUE(arsak_json) AS arsak,
+      FROM
+        datastream_tilleggsstonader_sak.public_behandlingshistorikk bh,
+        UNNEST(JSON_EXTRACT_ARRAY(bh.metadata, '$.årsakerUnderkjent')) AS arsak_json
+      WHERE utfall = 'BESLUTTE_VEDTAK_UNDERKJENT';
