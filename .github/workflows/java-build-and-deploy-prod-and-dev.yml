@@ -70,9 +70,10 @@ jobs:
       - name: Post build failures to Slack
         if: failure()
         run: |
-          curl -X POST --data "{\"text\": \"Build av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
+          curl -X POST --data "{\"text\": \"Build av $GITHUB_REPOSITORY feilet ($GITHUB_ACTOR)\n $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          GITHUB_ACTOR: ${{ github.actor }}
     outputs:
       image: ${{ steps.docker-push.outputs.image }}
 
@@ -93,9 +94,10 @@ jobs:
       - name: Post deploy failures to Slack
         if: failure()
         run: |
-          curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY til dev feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
+          curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY til dev feilet ($GITHUB_ACTOR)\n $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          GITHUB_ACTOR: ${{ github.actor }}
 
   deploy_prod:
     name: Deploy til ${{ inputs.prod-cluster }}
@@ -114,9 +116,10 @@ jobs:
       - name: Post deploy failures to Slack
         if: failure()
         run: |
-          curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY til prod feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
+          curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY til prod feilet ($GITHUB_ACTOR)\n $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          GITHUB_ACTOR: ${{ github.actor }}
 
   trivy-scan:
     name: Scan docker-image med Trivy

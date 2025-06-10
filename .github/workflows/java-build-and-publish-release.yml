@@ -41,9 +41,10 @@ jobs:
       - name: Post build failures to Slack
         if: failure()
         run: |
-          curl -X POST --data "{\"text\": \"Build av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
+          curl -X POST --data "{\"text\": \"Build av $GITHUB_REPOSITORY feilet ($GITHUB_ACTOR)\n $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          GITHUB_ACTOR: ${{ github.actor }}
 
   release:
     name: "Opprett og publiser pakke"
@@ -90,6 +91,7 @@ jobs:
       - name: "Post eventuelle feil til Slack"
         if: failure()
         run: |
-          curl -X POST --data "{\"text\": \"Release av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
+          curl -X POST --data "{\"text\": \"Release av $GITHUB_REPOSITORY feilet ($GITHUB_ACTOR)\n $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          GITHUB_ACTOR: ${{ github.actor }}
