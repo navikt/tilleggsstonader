@@ -19,7 +19,6 @@ jobs:
         env:
           CLUSTER: ${{ inputs.cluster }}
           RESOURCE: "\
-            .nais/metabase-views/dataset.yml,\
             .nais/metabase-views/avslag-arsaker.yml,\
             .nais/metabase-views/sett-pa-vent-arsaker.yml,\
             .nais/metabase-views/sett-pa-vent-varighet.yml,\
