@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 7
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
 
@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Deploy til ${{ inputs.dev-cluster }}
         uses: nais/deploy/actions/deploy@v2
@@ -105,7 +105,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: nais/deploy/actions/deploy@v2
         env:
@@ -131,7 +131,7 @@ jobs:
       security-events: write # push sarif to github security
       id-token: write # for nais/login
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: nais/login@v0
         with:
           team: tilleggsstonader

@@ -43,7 +43,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Sjekk ut koden
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Sett opp Node ${{ inputs.node-version }}
         uses: actions/setup-node@v4
@@ -75,7 +75,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Sjekk ut koden
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Deploy til ${{ inputs.cluster }}
         uses: nais/deploy/actions/deploy@v2
