@@ -42,7 +42,7 @@ jobs:
   build:
     name: Bygg, test og last opp docker-image
     runs-on: ubuntu-latest
-    timeout-minutes: 7
+    timeout-minutes: 10
     outputs:
       image: ${{ steps.docker-push.outputs.image }}
     steps:
@@ -60,7 +60,7 @@ jobs:
       - name: Sett opp Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Test, bygg og generer SBOM
+      - name: Test og lag JAR
         run: ./gradlew test bootJar -PskipLint
 
       - name: Last opp docker-image
