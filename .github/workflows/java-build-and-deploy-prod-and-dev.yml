@@ -43,6 +43,8 @@ jobs:
     name: Bygg, test og last opp docker-image
     runs-on: ubuntu-latest
     timeout-minutes: 7
+    outputs:
+      image: ${{ steps.docker-push.outputs.image }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -66,7 +68,6 @@ jobs:
         id: docker-push
         with:
           team: tilleggsstonader
-          byosbom: build/reports/application.cdx.json
       - name: Post build failures to Slack
         if: failure()
         run: |
@@ -74,8 +75,6 @@ jobs:
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           GITHUB_ACTOR: ${{ github.actor }}
-    outputs:
-      image: ${{ steps.docker-push.outputs.image }}
 
   deploy_dev:
     name: Deploy til ${{ inputs.dev-cluster }}
@@ -91,6 +90,7 @@ jobs:
           CLUSTER: ${{ inputs.dev-cluster }}
           RESOURCE: ${{ inputs.dev-manifest }}
           IMAGE: ${{ needs.build.outputs.image }}
+
       - name: Post deploy failures to Slack
         if: failure()
         run: |

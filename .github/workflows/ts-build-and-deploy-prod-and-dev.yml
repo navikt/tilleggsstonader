@@ -48,6 +48,8 @@ jobs:
     name: Build and push Docker container
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    outputs:
+      image: ${{ steps.docker-push.outputs.image }}
     steps:
       - name: Sjekk ut koden
         uses: actions/checkout@v5
@@ -80,9 +82,6 @@ jobs:
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           GITHUB_ACTOR: ${{ github.actor }}
-    outputs:
-      image: ${{ steps.docker-push.outputs.image }}
-
 
   deploy_dev:
     name: Deploy til ${{ inputs.dev-cluster }}

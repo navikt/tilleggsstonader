@@ -41,6 +41,8 @@ jobs:
     name: Bygg og last opp docker-image
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    outputs:
+      image: ${{ steps.docker-push.outputs.image }}
     steps:
       - name: Sjekk ut koden
         uses: actions/checkout@v5
@@ -65,8 +67,6 @@ jobs:
         id: docker-push
         with:
           team: tilleggsstonader
-    outputs:
-      image: ${{ steps.docker-push.outputs.image }}
 
   deploy:
     name: Deploy til ${{ inputs.cluster }}
