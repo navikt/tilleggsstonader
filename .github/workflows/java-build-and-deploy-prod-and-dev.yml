@@ -51,14 +51,14 @@ jobs:
           persist-credentials: false
 
       - name: Sett opp JDK21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '21'
           cache: 'gradle'
 
       - name: Sett opp Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
 
       - name: Test og lag JAR
         run: ./gradlew test bootJar -PskipLint
