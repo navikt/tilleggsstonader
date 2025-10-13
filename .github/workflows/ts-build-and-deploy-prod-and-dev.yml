@@ -74,6 +74,7 @@ jobs:
         id: docker-push
         with:
           team: tilleggsstonader
+          salsa: false
 
       - name: Post byggefeil til Slack
         if: failure()
@@ -82,6 +83,17 @@ jobs:
         env:
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           GITHUB_ACTOR: ${{ github.actor }}
+
+  salsa:
+    name: "Generer SBOM, attester og signer Docker-bilde"
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: "write"
+    steps:
+      - uses: ./.github/actions/attest-sign
+        with:
+          digest: ${{ needs.build.outputs.digest }}
 
   deploy_dev:
     name: Deploy til ${{ inputs.dev-cluster }}
