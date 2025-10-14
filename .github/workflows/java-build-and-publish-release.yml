@@ -58,18 +58,28 @@ jobs:
         run: |
           export TAG_NAME="$(TZ="Europe/Oslo" date +%Y.%m.%d-%H.%M).$(git rev-parse --short=12 HEAD)"
           echo "RELEASE_TAG=$TAG_NAME" >> $GITHUB_ENV
-      #- name: Set changelog
-      #  id: changelog
-      #  # (Escape newlines see https://github.com/actions/create-release/issues/25)
-      #  run: |
-      #    text="$(git --no-pager log $(git describe --tags --abbrev=0)..HEAD --pretty=format:"%h %s")"
-      #    echo "::set-output name=CHANGELOG::$text"
+
+      - name: "Sett endringslogg"
+        id: changelog
+        run: |
+          last_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -n "$last_tag" ]; then
+            text="$(git --no-pager log $last_tag..HEAD --pretty=format:'- %h %s')"
+          else
+            text="$(git --no-pager log --pretty=format:'- %h %s')"
+          fi
+          {
+            echo "CHANGELOG<<EOF"
+            echo "$text"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
 
       - name: "Publiser pakke"
         uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ env.RELEASE_TAG }}
           tag_name: ${{ env.RELEASE_TAG }}
+          body: ${{ steps.changelog.outputs.CHANGELOG }}
           draft: false
           prerelease: false
 
