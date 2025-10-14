@@ -28,17 +28,16 @@ jobs:
 
       - uses: actions/setup-java@v5
         with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: 'gradle'
+          java-version: 21
+          distribution: temurin
+          cache: gradle
 
-      - name: Sett opp Gradle
-        uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@v5
 
-      - name: Test, bygg og generer SBOM
+      - name: "Bygg og test applikasjonen"
         run: ./gradlew build -PskipLint
 
-      - name: Post build failures to Slack
+      - name: "Post build failures to Slack"
         if: failure()
         run: |
           curl -X POST --data "{\"text\": \"Build av $GITHUB_REPOSITORY feilet ($GITHUB_ACTOR)\n $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
