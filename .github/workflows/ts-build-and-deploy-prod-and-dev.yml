@@ -50,6 +50,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       image: ${{ steps.docker-push.outputs.image }}
+      digest: ${{ steps.docker-push.outputs.digest }}
     steps:
       - name: Sjekk ut koden
         uses: actions/checkout@v5
@@ -91,7 +92,7 @@ jobs:
     permissions:
       id-token: "write"
     steps:
-      - uses: ./.github/actions/attest-sign
+      - uses: navikt/tilleggsstonader/.github/actions/attest-sign@main
         with:
           digest: ${{ needs.build.outputs.digest }}
 
