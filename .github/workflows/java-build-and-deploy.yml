@@ -71,7 +71,7 @@ jobs:
     permissions:
       id-token: "write"
     steps:
-      - uses: ./.github/actions/attest-sign
+      - uses: navikt/tilleggsstonader/.github/actions/attest-sign@main
         with:
           digest: ${{ needs.build.outputs.digest }}
 
