@@ -11,7 +11,7 @@ runs:
       uses: nais/login@v0
       id: login
       with:
-        team: tilleggstonader
+        team: tilleggsstonader
 
     - name: "Hent ut navn på repo"
       id: setup
