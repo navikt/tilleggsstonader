@@ -90,6 +90,8 @@ jobs:
     permissions:
       id-token: "write"
     steps:
+      - uses: actions/checkout@v5
+
       - uses: ./.github/actions/attest-sign
         with:
           digest: ${{ needs.build.outputs.digest }}
