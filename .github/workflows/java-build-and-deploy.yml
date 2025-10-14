@@ -36,6 +36,9 @@ jobs:
     name: "Bygg, test og push docker-image"
     runs-on: ubuntu-latest
     timeout-minutes: 8
+    outputs:
+      image: ${{ steps.docker-push.outputs.image }}
+      digest: ${{ steps.docker-push.outputs.digest }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -61,8 +64,6 @@ jobs:
         with:
           team: tilleggsstonader
           salsa: false
-    outputs:
-      image: ${{ steps.docker-push.outputs.image }}
 
   salsa:
     name: "Attester og signer SBOM"

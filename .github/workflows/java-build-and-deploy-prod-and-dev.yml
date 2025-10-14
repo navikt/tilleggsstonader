@@ -45,7 +45,7 @@ jobs:
     timeout-minutes: 10
     outputs:
       image: ${{ steps.docker-push.outputs.image }}
-      digest: ${{ steps.docker-build-push.outputs.digest }}
+      digest: ${{ steps.docker-push.outputs.digest }}
     steps:
       - uses: actions/checkout@v5
         with:
