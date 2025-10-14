@@ -85,7 +85,7 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
 
   salsa:
-    name: "Generer SBOM, attester og signer Docker-bilde"
+    name: "Attester og signer SBOM"
     needs: build
     runs-on: ubuntu-latest
     permissions:

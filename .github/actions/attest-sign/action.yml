@@ -1,5 +1,5 @@
 name: "attest-sign"
-description: "Generer SBOM, attester og signer Docker-bilde"
+description: "Attester og signer SBOM"
 inputs:
   digest:
     description: "Docker image digest"
@@ -18,7 +18,7 @@ runs:
         repo_name="${GITHUB_REPOSITORY/$GITHUB_REPOSITORY_OWNER\//}"
         repo_name="$(tr "[:upper:]" "[:lower:]" <<< "$repo_name")"
         echo "REPO_NAME=$repo_name" >> $GITHUB_OUTPUT
-    - name: "Generer SBOM, attester og signer Docker-bilde"
+    - name: "Attester og signer SBOM"
       id: attest-sign
       uses: nais/attest-sign@v1
       with:
