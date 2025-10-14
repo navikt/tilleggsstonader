@@ -51,24 +51,25 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Sett opp JDK21
-        uses: actions/setup-java@v5
+      - uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'gradle'
+          distribution: temurin
+          java-version: 21
+          cache: gradle
 
-      - name: Sett opp Gradle
-        uses: gradle/actions/setup-gradle@v5
+      - uses: gradle/actions/setup-gradle@v5
         with:
           dependency-graph: generate-and-submit
         env:
           DEPENDENCY_GRAPH_INCLUDE_CONFIGURATIONS: compileClasspath|runtimeClasspath # Eksluder test-avhengigheter
 
-      - name: Test og lag JAR
-        run: ./gradlew test bootJar -PskipLint
+      - name: "Kjør tester"
+        run: ./gradlew test -PskipLint
 
-      - name: Last opp docker-image
+      - name: "Bygg applikasjonen"
+        run: ./gradlew bootJar -PskipLint
+
+      - name: "Last opp docker-image"
         uses: nais/docker-build-push@v0
         id: docker-push
         with:
