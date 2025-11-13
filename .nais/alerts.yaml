@@ -1,7 +1,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: tilleggsstonader-sak-alerts
+  name: tilleggsstonader-alerts
   namespace: tilleggsstonader
   labels:
     team: tilleggsstonader
@@ -31,7 +31,7 @@ spec:
         - alert: Error-logg alert
           expr: sum(increase(logback_events_total{app=~"tilleggsstonader-.*",level=~"error"}[5m])) > 0
           annotations:
-            consequence: Det har skjedd en feil i TS-sak
+            consequence: Det har blitt logget error i tilleggsstonader
             action: "Sjekk logger for å finne feilen https://logs.adeo.no/s/nav-logs-legacy/app/r/s/zjo6X"
           labels:
             namespace: tilleggsstonader
@@ -40,7 +40,7 @@ spec:
         - alert: Feilet task i Tilleggsstønader
           expr: max(prosessering_tasks_feilet{team="tilleggsstonader"}) > 0
           annotations:
-            consequence: En eller flere prosesseringstasks har feilet
+            consequence: {{ $value }} prosesseringstasks har feilet
             action: "Sjekk prosessering: https://tilleggsstonader-prosessering.intern.nav.no/"
           labels:
             namespace: tilleggsstonader
