@@ -40,7 +40,7 @@ spec:
         - alert: Feilet task i Tilleggsstønader
           expr: max(prosessering_tasks_feilet{team="tilleggsstonader"}) > 0
           annotations:
-            consequence: {{ $value }} prosesseringstasks har feilet
+            consequence: "{{ $value }} prosesseringstasks har feilet"
             action: "Sjekk prosessering: https://tilleggsstonader-prosessering.intern.nav.no/"
           labels:
             namespace: tilleggsstonader
