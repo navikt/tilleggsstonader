@@ -32,7 +32,7 @@ spec:
           expr: sum(increase(logback_events_total{app=~"tilleggsstonader-.*",level=~"error"}[5m])) > 0
           annotations:
             consequence: Det har blitt logget error i tilleggsstonader
-            action: "Sjekk logger for å finne feilen https://logs.adeo.no/s/nav-logs-legacy/app/r/s/zjo6X"
+            action: "Sjekk logger for å finne feilen https://logs.az.nav.no/app/data-explorer/discover?security_tenant=navlogs#/view/08ba2c80-c55b-11f0-a352-7f33fcf8355a"
           labels:
             namespace: tilleggsstonader
             severity: critical
