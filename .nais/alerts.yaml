@@ -45,3 +45,12 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: critical
+
+        - alert: Behandlinger uten oppgave i TS-sak
+          expr: max(behandlinger_uten_oppgave{team="tilleggsstonader"}) > 0
+          annotations:
+            consequence: "{{ $value }} åpne behandlinger har ingen gyldig oppgave tilknyttet seg, vil ikke bli synlig i oppgavebenken"
+            action: "Hvis oppgave har blitt ferdigstilt manuelt eller flyttet til en ukjent enhet kan det opprettes ny oppgave gjennom TS-sak sin swagger."
+          labels:
+            namespace: tilleggsstonader
+            severity: critical
