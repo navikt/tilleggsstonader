@@ -56,7 +56,8 @@ jobs:
 
       - name: "Sett versjonstag"
         run: |
-          export TAG_NAME="$(TZ="Europe/Oslo" date +%Y.%m.%d-%H.%M).$(git rev-parse --short=12 HEAD)"
+          export BRANCH_NAME=$(echo ${{ github.ref_name }} | sed 's/\//-/g')
+          export TAG_NAME="$BRANCH_NAME-$(TZ="Europe/Oslo" date +%Y.%m.%d-%H.%M).$(git rev-parse --short=12 HEAD)"
           echo "RELEASE_TAG=$TAG_NAME" >> $GITHUB_ENV
 
       - name: "Sett endringslogg"
