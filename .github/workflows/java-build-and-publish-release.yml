@@ -56,8 +56,12 @@ jobs:
 
       - name: "Sett versjonstag"
         run: |
-          export BRANCH_NAME=$(echo ${{ github.ref_name }} | sed 's/\//-/g')
-          export TAG_NAME="$BRANCH_NAME-$(TZ="Europe/Oslo" date +%Y.%m.%d-%H.%M).$(git rev-parse --short=12 HEAD)"
+          BASE_VERSION="$(TZ="Europe/Oslo" date +%Y.%m.%d-%H.%M).$(git rev-parse --short=12 HEAD)"
+          if [[ "${{ github.ref_name }}" == "main" ]]; then
+            export TAG_NAME="$BASE_VERSION"
+          else
+            export TAG_NAME="$BASE_VERSION-SNAPSHOT"
+          fi
           echo "RELEASE_TAG=$TAG_NAME" >> $GITHUB_ENV
 
       - name: "Sett endringslogg"
