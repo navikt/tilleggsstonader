@@ -37,6 +37,15 @@ spec:
             namespace: tilleggsstonader
             severity: critical
 
+        - alert: Warning-logg alert
+          expr: sum(increase(logback_events_total{app=~"tilleggsstonader-.*",level=~"warning"}[5m])) > 5
+          annotations:
+            consequence: Det har blitt logget warning i tilleggsstonader
+            action: "Sjekk <https://logs.az.nav.no/goto/1abda1a6e483a6c873e44ff8dbd84154?security_tenant=navlogs|logs> eller <https://cloudlogging.app.goo.gl/YRL4oK8zfTdVgXQp8|secure logs>"
+          labels:
+            namespace: tilleggsstonader
+            severity: warning
+
         - alert: Feilet task i Tilleggsstønader
           expr: max(prosessering_tasks_feilet{team="tilleggsstonader"}) > 0
           annotations:
