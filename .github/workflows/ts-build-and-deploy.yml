@@ -45,7 +45,7 @@ jobs:
       image: ${{ steps.docker-push.outputs.image }}
     steps:
       - name: Sjekk ut koden
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Sett opp Node ${{ inputs.node-version }}
         uses: actions/setup-node@v6
@@ -75,7 +75,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Sjekk ut koden
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Deploy til ${{ inputs.cluster }}
         uses: nais/deploy/actions/deploy@v2
