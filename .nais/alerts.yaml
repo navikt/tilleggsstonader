@@ -63,3 +63,12 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: critical
+
+        - alert: Iverksetting har gått over rest
+          expr: sum(increase(iverksettinger_til_helved_total{namespace="tilleggsstonader", type="rest"}[1h])) > 0
+          annotations:
+            consequence: "Forventer ikke iverksettinger over rest lenger"
+            action: "Sjekk ut hvilken sak og hvorfor den har blitt utbetalt over rest"
+          labels:
+            namespace: tilleggsstonader
+            severity: critical
