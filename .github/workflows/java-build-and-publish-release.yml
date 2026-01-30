@@ -60,7 +60,7 @@ jobs:
           if [[ "${{ github.ref_name }}" == "main" ]]; then
             export TAG_NAME="$BASE_VERSION"
           else
-            export TAG_NAME="$BASE_VERSION-SNAPSHOT"
+            export TAG_NAME="$BASE_VERSION-dev"
           fi
           echo "RELEASE_TAG=$TAG_NAME" >> $GITHUB_ENV
 
