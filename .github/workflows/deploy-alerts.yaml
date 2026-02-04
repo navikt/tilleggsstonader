@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - '.nais/alerts.yaml'
+      - '.nais/alertconfig.yaml'
 
 permissions:
   contents: read
@@ -17,12 +18,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-      - name: Deploy til dev
+      - name: Deploy alertconfig til dev
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/alertconfig.yaml
+      - name: Deploy alerts til dev
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/alerts.yaml
-      - name: Deploy til prod
+      - name: Deploy alertsconfig til prod
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/alertconfig.yaml
+      - name: Deploy alerts til prod
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp

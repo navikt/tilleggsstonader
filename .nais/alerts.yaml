@@ -27,6 +27,7 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: critical
+            alert_type: repeating-alert
 
         - alert: Error-logg alert
           expr: sum(increase(logback_events_total{app=~"tilleggsstonader-.*",level=~"error"}[5m])) > 0
@@ -45,6 +46,7 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: critical
+            alert_type: repeating-alert
 
         - alert: Behandlinger uten oppgave i TS-sak
           expr: max(behandlinger_uten_oppgave{team="tilleggsstonader"}) > 0
