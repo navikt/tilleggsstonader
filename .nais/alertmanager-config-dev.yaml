@@ -1,0 +1,96 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: tilleggsstonader-alertmanager
+  namespace: tilleggsstonader
+  labels:
+    alertmanagerConfig: tilleggsstonader-alertmanager
+spec:
+  receivers:
+    - name: tilleggsstonader-slack-receiver
+      slackConfigs:
+        - apiURL:
+            key: apiUrl
+            name: slack-webhook
+          channel: "#tilleggsstønader-alerts-dev"
+          iconEmoji: ":alert:"
+          username: "Alertmanager tilleggsstonader"
+          sendResolved: true
+          title: |-
+            [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+          text: >-
+            {{ range .Alerts -}}
+            *Alert:* {{ .Labels.alertname }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+
+            *Consequence:* {{ .Annotations.consequence }}
+
+            *Action:* {{ .Annotations.action }}
+
+            *Details:*
+              {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+            {{ end }}
+          color: |-
+            {{ if eq .Status "firing" -}}
+              {{ if eq .CommonLabels.severity "warning" -}}
+                warning
+              {{- else if eq .CommonLabels.severity "critical" -}}
+                danger
+              {{- else -}}
+                #439FE0
+              {{- end -}}
+            {{ else -}}
+              good
+            {{- end }}
+
+  route:
+    receiver: tilleggsstonader-slack-receiver
+    groupBy:
+      - alertname
+    groupInterval: 10s
+    groupWait: 5s
+    repeatInterval: 1h
+    routes:
+      # Rute for alerts som kun skal fyre i arbeidstid
+      - receiver: tilleggsstonader-slack-receiver
+        matchers:
+          - name: alert_type
+            matchType: "="
+            value: tilleggsstonader_arbeidstid
+        muteTimeIntervals:
+          - weekends
+          - outside-working-hours
+        groupBy:
+          - alertname
+        groupInterval: 10s
+        groupWait: 5s
+        repeatInterval: 1h
+      # Rute for alerts som alltid skal fyre
+      - receiver: tilleggsstonader-slack-receiver
+        matchers:
+          - name: namespace
+            matchType: "="
+            value: tilleggsstonader
+        groupBy:
+          - alertname
+        groupInterval: 10s
+        groupWait: 5s
+        repeatInterval: 1h
+
+  muteTimeIntervals:
+    - name: weekends
+      timeIntervals:
+        - weekdays: ['saturday', 'sunday']
+          location: 'Europe/Oslo'
+    - name: outside-working-hours
+      timeIntervals:
+        - weekdays: ['monday:friday']
+          times:
+            - start_time: '17:00'
+              end_time: '23:59'
+          location: 'Europe/Oslo'
+        - weekdays: ['monday:friday']
+          times:
+            - start_time: '00:00'
+              end_time: '08:00'
+          location: 'Europe/Oslo'
