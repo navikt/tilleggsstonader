@@ -5,7 +5,9 @@ on:
       - main
     paths:
       - '.nais/alerts.yaml'
+      - '.nais/alerts-dev.yaml'
       - '../../.nais/alertmanager-config-dev.yaml'
+  workflow_dispatch:
 
 permissions:
   contents: read
