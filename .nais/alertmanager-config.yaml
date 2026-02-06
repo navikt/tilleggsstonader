@@ -12,7 +12,7 @@ spec:
         - apiURL:
             key: apiUrl
             name: slack-webhook
-          channel: "#tilleggsstønader-alerts-dev"
+          channel: "{{slackChannel}}"
           iconEmoji: ":alert:"
           username: "Alertmanager tilleggsstonader"
           sendResolved: true
@@ -67,9 +67,9 @@ spec:
       # Rute for alerts som alltid skal fyre
       - receiver: tilleggsstonader-slack-receiver
         matchers:
-          - name: namespace
+          - name: alert_type
             matchType: "="
-            value: tilleggsstonader
+            value: tilleggsstonader_alltid
         groupBy:
           - alertname
         groupInterval: 10s
