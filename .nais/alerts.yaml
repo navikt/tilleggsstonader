@@ -48,7 +48,7 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: warning
-            alert_type: tilleggsstonader_alltid
+            alert_type: tilleggsstonader_arbeidstid
 
         - alert: Feilet task i Tilleggsstønader
           expr: max(prosessering_tasks_feilet{team="tilleggsstonader"}) > 0
