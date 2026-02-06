@@ -57,9 +57,8 @@ spec:
           - name: alert_type
             matchType: "="
             value: tilleggsstonader_arbeidstid
-        muteTimeIntervals:
-          - weekends
-          - outside-working-hours
+        activeTimeIntervals:
+          - arbeidstid
         groupBy:
           - alertname
         groupInterval: 10s
@@ -78,19 +77,14 @@ spec:
         repeatInterval: 1h
 
   muteTimeIntervals:
-    - name: weekends
+    - name: arbeidstid
       timeIntervals:
-        - weekdays: ['saturday', 'sunday']
-          location: 'Europe/Oslo'
-    - name: outside-working-hours
-      timeIntervals:
-        - weekdays: ['monday:friday']
-          times:
-            - start_time: '17:00'
-              end_time: '23:59'
-          location: 'Europe/Oslo'
-        - weekdays: ['monday:friday']
-          times:
-            - start_time: '00:00'
-              end_time: '08:00'
-          location: 'Europe/Oslo'
+        - times:
+            - startTime: '08:00'
+              endTime: '17:00'
+          weekdays:
+            - Monday
+            - Tuesday
+            - Wednesday
+            - Thursday
+            - Friday

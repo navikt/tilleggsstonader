@@ -1,7 +1,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: tilleggsstonader-alerts
+  name: tilleggsstonader-alerts-dev
   namespace: tilleggsstonader
   labels:
     team: tilleggsstonader
