@@ -30,11 +30,13 @@ jobs:
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/alertmanager-config-dev.yaml
+          VAR: slack_channel="#tilleggsstønader-alerts-dev"
       - name: Deploy alertmanager config til prod
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp
           RESOURCE: .nais/alertmanager-config.yaml
+          VAR: slack_channel="#tilleggsstønader-alerts"
       - name: Deploy alerts til prod
         uses: nais/deploy/actions/deploy@v2
         env:

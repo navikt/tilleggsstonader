@@ -38,7 +38,7 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: critical
-            alert_type: tilleggsstonader
+            alert_type: tilleggsstonader_alltid
 
         - alert: Warning-logg alert
           expr: sum(increase(logback_events_total{app=~"tilleggsstonader-.*",level=~"warn"}[5m])) > 3
@@ -48,7 +48,7 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: warning
-            alert_type: tilleggsstonader
+            alert_type: tilleggsstonader_alltid
 
         - alert: Feilet task i Tilleggsstønader
           expr: max(prosessering_tasks_feilet{team="tilleggsstonader"}) > 0
@@ -78,4 +78,4 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: critical
-            alert_type: tilleggsstonader
+            alert_type: tilleggsstonader_alltid
