@@ -6,7 +6,7 @@ on:
     paths:
       - '.nais/alerts.yaml'
       - '.nais/alertmanager-config.yaml'
-      - '.nais/alertmanager-config-dev.yaml'
+      - '.github/workflows/deploy-alerts.yaml'
   workflow_dispatch:
 
 permissions:
