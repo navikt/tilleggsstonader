@@ -5,7 +5,8 @@ on:
       - main
     paths:
       - '.nais/alerts.yaml'
-      - '.nais/alertmanager-config.yaml'
+      - '.nais/alertmanager-config-dev.yaml'
+      - '.nais/alertmanager-config-prod.yaml'
       - '.github/workflows/deploy-alerts.yaml'
   workflow_dispatch:
 
@@ -29,14 +30,12 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: .nais/alertmanager-config.yaml
-          VARS: .nais/alerts-dev.json
+          RESOURCE: .nais/alertmanager-config-dev.yaml
       - name: Deploy alertmanager config til prod
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: prod-gcp
-          RESOURCE: .nais/alertmanager-config.yaml
-          VARS: .nais/alerts-prod.json
+          RESOURCE: .nais/alertmanager-config-prod.yaml
       - name: Deploy alerts til prod
         uses: nais/deploy/actions/deploy@v2
         env:

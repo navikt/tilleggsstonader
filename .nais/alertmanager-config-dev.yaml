@@ -12,36 +12,36 @@ spec:
         - apiURL:
             key: apiUrl
             name: slack-webhook
-          channel: {{slackChannel}}
+          channel: '#tilleggsstønader-alerts-dev'
           iconEmoji: ":alert:"
           username: "Alertmanager tilleggsstonader"
           sendResolved: true
           title: |-
-            [\{{ .Status | toUpper }}\{{ if eq .Status "firing" }}:\{{ len .Alerts.Firing }}\{{ end }}] \{{ .CommonLabels.alertname }}
+            [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ len .Alerts.Firing }}{{ end }}] {{ .CommonLabels.alertname }}
           text: >-
-            \{{ range .Alerts -}}
-            *Alert:* \{{ .Labels.alertname }}\{{ if .Labels.severity }} - `\{{ .Labels.severity }}`\{{ end }}
+            {{ range .Alerts -}}
+            *Alert:* {{ .Labels.alertname }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
 
-            *Consequence:* \{{ .Annotations.consequence }}
+            *Consequence:* {{ .Annotations.consequence }}
 
-            *Action:* \{{ .Annotations.action }}
+            *Action:* {{ .Annotations.action }}
 
             *Details:*
-              \{{ range .Labels.SortedPairs }} • *\{{ .Name }}:* `\{{ .Value }}`
-            \{{ end }}
-            \{{ end }}
+              {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+            {{ end }}
           color: |-
-            \{{ if eq .Status "firing" -}}
-              \{{ if eq .CommonLabels.severity "warning" -}}
+            {{ if eq .Status "firing" -}}
+              {{ if eq .CommonLabels.severity "warning" -}}
                 warning
-              \{{- else if eq .CommonLabels.severity "critical" -}}
+              {{- else if eq .CommonLabels.severity "critical" -}}
                 danger
-              \{{- else -}}
+              {{- else -}}
                 #439FE0
-              \{{- end -}}
-            \{{ else -}}
+              {{- end -}}
+            {{ else -}}
               good
-            \{{- end }}
+            {{- end }}
 
   route:
     receiver: tilleggsstonader-slack-receiver
@@ -62,4 +62,3 @@ spec:
         groupInterval: 10s
         groupWait: 5s
         repeatInterval: 24h
-
