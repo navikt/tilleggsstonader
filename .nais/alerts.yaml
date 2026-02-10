@@ -18,7 +18,7 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: critical
-            alert_type: tilleggsstonader_arbeidstid
+            alert_type: tilleggsstonader_daglig
 
         - alert: Iverksettinger uten OK-status
           expr: max(andel_tilkjent_ytelse_iverksetting_status{status="IKKE_MOTTATT_OK_STATUS"}) > 0
@@ -28,7 +28,7 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: critical
-            alert_type: tilleggsstonader_arbeidstid
+            alert_type: tilleggsstonader_daglig
 
         - alert: Error-logg alert
           expr: sum(increase(logback_events_total{app=~"tilleggsstonader-.*",level=~"error"}[5m])) > 0
@@ -38,7 +38,6 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: critical
-            alert_type: tilleggsstonader_alltid
 
         - alert: Warning-logg alert
           expr: sum(increase(logback_events_total{app=~"tilleggsstonader-.*",level=~"warn"}[5m])) > 3
@@ -48,7 +47,6 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: warning
-            alert_type: tilleggsstonader_arbeidstid
 
         - alert: Feilet task i Tilleggsstønader
           expr: max(prosessering_tasks_feilet{team="tilleggsstonader"}) > 0
@@ -58,7 +56,7 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: critical
-            alert_type: tilleggsstonader_arbeidstid
+            alert_type: tilleggsstonader_daglig
 
         - alert: Behandlinger uten oppgave i TS-sak
           expr: max(behandlinger_uten_oppgave{team="tilleggsstonader"}) > 0
@@ -68,7 +66,7 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: critical
-            alert_type: tilleggsstonader_arbeidstid
+            alert_type: tilleggsstonader_daglig
 
         - alert: Iverksetting har gått over rest
           expr: sum(increase(iverksettinger_til_helved_total{namespace="tilleggsstonader", type="rest"}[1h])) > 0
@@ -78,4 +76,4 @@ spec:
           labels:
             namespace: tilleggsstonader
             severity: critical
-            alert_type: tilleggsstonader_alltid
+            alert_type: tilleggsstonader_daglig

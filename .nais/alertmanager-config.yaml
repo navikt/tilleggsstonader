@@ -51,40 +51,15 @@ spec:
     groupWait: 5s
     repeatInterval: 1h
     routes:
-      # Rute for alerts som kun skal fyre i arbeidstid
+      # Rute for alerts som gjentas maks én gang per dag
       - receiver: tilleggsstonader-slack-receiver
         matchers:
           - name: alert_type
             matchType: "="
-            value: tilleggsstonader_arbeidstid
-        activeTimeIntervals:
-          - arbeidstid
+            value: tilleggsstonader_daglig
         groupBy:
           - alertname
         groupInterval: 10s
         groupWait: 5s
-        repeatInterval: 1h
-      # Rute for alerts som alltid skal fyre
-      - receiver: tilleggsstonader-slack-receiver
-        matchers:
-          - name: alert_type
-            matchType: "="
-            value: tilleggsstonader_alltid
-        groupBy:
-          - alertname
-        groupInterval: 10s
-        groupWait: 5s
-        repeatInterval: 1h
+        repeatInterval: 24h
 
-  muteTimeIntervals:
-    - name: arbeidstid
-      timeIntervals:
-        - times:
-            - startTime: '08:00'
-              endTime: '17:00'
-          weekdays:
-            - Monday
-            - Tuesday
-            - Wednesday
-            - Thursday
-            - Friday
