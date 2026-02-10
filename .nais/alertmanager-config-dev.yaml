@@ -45,6 +45,10 @@ spec:
 
   route:
     receiver: tilleggsstonader-slack-receiver
+    matchers:
+      - name: namespace
+        matchType: "="
+        value: tilleggsstonader
     groupBy:
       - alertname
     groupInterval: 10s
