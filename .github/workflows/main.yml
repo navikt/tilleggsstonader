@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - 'main'
+    paths:
+      - '.nais/metabase-views/**'
+      - '.github/workflows/deploy-bigquery-resources.yml'
   workflow_dispatch:
 
 permissions:
