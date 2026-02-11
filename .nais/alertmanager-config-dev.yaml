@@ -15,7 +15,7 @@ spec:
           channel: '#tilleggsstønader-alerts-dev'
           iconEmoji: ":alert:"
           username: "Alertmanager tilleggsstonader"
-          sendResolved: true
+          sendResolved: false
           title: |-
             [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ len .Alerts.Firing }}{{ end }}] {{ .CommonLabels.alertname }}
           text: >-
