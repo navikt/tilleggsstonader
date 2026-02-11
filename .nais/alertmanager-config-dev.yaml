@@ -53,7 +53,7 @@ spec:
       - alertname
     groupInterval: 10s
     groupWait: 5s
-    repeatInterval: 1h
+    repeatInterval: 10m
     routes:
       # Rute for alerts som gjentas maks én gang per dag
       - receiver: tilleggsstonader-slack-receiver
@@ -66,3 +66,14 @@ spec:
         groupInterval: 10s
         groupWait: 5s
         repeatInterval: 24h
+      # Rute for alerts som gjentas maks én gang per time
+      - receiver: tilleggsstonader-slack-receiver
+        matchers:
+          - name: alert_type
+            matchType: "="
+            value: tilleggsstonader_hver_time
+        groupBy:
+          - alertname
+        groupInterval: 10s
+        groupWait: 5s
+        repeatInterval: 1h
