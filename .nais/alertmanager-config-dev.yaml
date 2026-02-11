@@ -60,7 +60,7 @@ spec:
         matchers:
           - name: alert_type
             matchType: "="
-            value: tilleggsstonader_daglig
+            value: daglig
         groupBy:
           - alertname
         groupInterval: 10s
@@ -71,7 +71,7 @@ spec:
         matchers:
           - name: alert_type
             matchType: "="
-            value: tilleggsstonader_hver_time
+            value: hver_time
         groupBy:
           - alertname
         groupInterval: 10s
