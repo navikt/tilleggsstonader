@@ -61,6 +61,12 @@ spec:
       # Rute for alerts som gjentas maks én gang per dag
       - receiver: tilleggsstonader-slack-receiver
         matchers:
+          - name: namespace
+            matchType: "="
+            value: tilleggsstonader
+          - name: alert_type
+            matchType: "="
+            value: custom
           - name: repeat_interval
             matchType: "="
             value: daglig
@@ -69,9 +75,16 @@ spec:
         groupInterval: 10s
         groupWait: 5s
         repeatInterval: 24h
+        continue: false
       # Rute for alerts som gjentas maks én gang per time
       - receiver: tilleggsstonader-slack-receiver
         matchers:
+          - name: namespace
+            matchType: "="
+            value: tilleggsstonader
+          - name: alert_type
+            matchType: "="
+            value: custom
           - name: repeat_interval
             matchType: "="
             value: hver_time
@@ -80,3 +93,4 @@ spec:
         groupInterval: 10s
         groupWait: 5s
         repeatInterval: 1h
+        continue: false
