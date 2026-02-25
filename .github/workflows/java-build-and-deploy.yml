@@ -89,11 +89,3 @@ jobs:
           CLUSTER: ${{ inputs.cluster }}
           RESOURCE: ${{ inputs.manifest }}
           IMAGE: ${{ needs.build.outputs.image }}
-
-      - name: Post prod deploy failures to Slack
-        if: failure() && contains(inputs.cluster, 'prod')
-        run: |
-          curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY til prod feilet ($GITHUB_ACTOR)\n $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
-        env:
-          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          GITHUB_ACTOR: ${{ github.actor }}
