@@ -23,6 +23,6 @@ runs:
 
     - name: "Attester og signer SBOM"
       id: attest-sign
-      uses: nais/attest-sign@v1
+      uses: nais/attest-sign@v2
       with:
         image_ref: ${{ steps.login.outputs.registry }}/${{ steps.setup.outputs.REPO_NAME }}@${{ inputs.digest }}
