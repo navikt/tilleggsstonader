@@ -131,6 +131,12 @@ jobs:
         with:
           team: tilleggsstonader
 
+      - name: Sett opp Trivy
+        uses: aquasecurity/setup-trivy@v0.2.0
+        with:
+          cache: true
+          version: v0.69.2
+
       - name: Kjør Trivy sårbarhetssscanner
         uses: aquasecurity/trivy-action@master
         with:
@@ -139,6 +145,7 @@ jobs:
           output: 'trivy.sarif'
           severity: 'HIGH,CRITICAL'
           limit-severities-for-sarif: true
+          skip-setup-trivy: true
 
       - name: Last opp resultatet til GitHub Security
         uses: github/codeql-action/upload-sarif@v4
