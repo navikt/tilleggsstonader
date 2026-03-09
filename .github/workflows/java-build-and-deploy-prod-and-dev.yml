@@ -133,7 +133,7 @@ jobs:
           team: tilleggsstonader
 
       - name: Sett opp Trivy
-        uses: aquasecurity/setup-trivy@v0.2.0
+        uses: aquasecurity/setup-trivy@v0.2.5
         with:
           cache: true
           version: v0.69.2

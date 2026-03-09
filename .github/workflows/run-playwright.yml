@@ -43,7 +43,7 @@ jobs:
         env:
           CI: true # settes sånn at CI ikke kjører tester parallell
         run: yarn playwright test
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
