@@ -67,8 +67,19 @@ spec:
         - alert: Behandlinger uten oppgave i TS-sak
           expr: max(behandlinger_uten_oppgave{team="tilleggsstonader"}) > 0
           annotations:
-            consequence: "{{ $value }} åpne behandlinger har ingen gyldig oppgave tilknyttet seg, vil ikke bli synlig i oppgavebenken"
-            action: "Hvis oppgave har blitt ferdigstilt manuelt eller flyttet til en ukjent enhet kan det opprettes ny oppgave gjennom TS-sak sin swagger."
+            consequence: "{{ $value }} åpne behandlinger har ingen åpen oppgave tilknyttet seg, vil ikke bli synlig i oppgavebenken"
+            action: "Hvis oppgave har blitt ferdigstilt manuelt kan det opprettes ny oppgave gjennom TS-sak sin swagger."
+          labels:
+            namespace: tilleggsstonader
+            severity: critical
+            alert_type: custom
+            repeat_interval: daglig
+
+        - alert: Oppgaver tildelt ukjent enhet i TS-sak
+          expr: max(oppgaver_tildelt_ukjent_enhet{team="tilleggsstonader"}) > 0
+          annotations:
+            consequence: "{{ $value }} oppgaver er tildelt en ukjent enhet og blir ikke synlig i oppgavebenken"
+            action: "Hvis oppgave har blitt flyttet til en ukjent enhet kan det opprettes ny oppgave gjennom TS-sak sin swagger."
           labels:
             namespace: tilleggsstonader
             severity: critical
