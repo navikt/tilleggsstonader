@@ -57,7 +57,7 @@ jobs:
           java-version: 21
           cache: gradle
 
-      - uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5
+      - uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
         with:
           dependency-graph: generate-and-submit
         env:
@@ -139,7 +139,7 @@ jobs:
           version: v0.69.2
 
       - name: Kjør Trivy sårbarhetssscanner
-        uses: aquasecurity/trivy-action@f685ba721536b1ff19093eb4e1b1bf994c2bdbe2 # master
+        uses: aquasecurity/trivy-action@264c9c5e188ea085e7377fd77abd17bfbd4e5926 # master
         with:
           image-ref: '${{ needs.build.outputs.image }}'
           format: 'sarif'
