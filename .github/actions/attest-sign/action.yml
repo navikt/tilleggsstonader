@@ -8,7 +8,7 @@ runs:
   using: composite
   steps:
     - name: "Nais login"
-      uses: nais/login@v0
+      uses: nais/login@c88ada9ce583928e1c84d2fd5c45cfacdd18d5de # v0
       id: login
       with:
         team: tilleggsstonader
@@ -23,6 +23,6 @@ runs:
 
     - name: "Attester og signer SBOM"
       id: attest-sign
-      uses: nais/attest-sign@v2
+      uses: nais/attest-sign@d8ec1989b5d1eb59809b050149713002f3de8e2d # v2
       with:
         image_ref: ${{ steps.login.outputs.registry }}/${{ steps.setup.outputs.REPO_NAME }}@${{ inputs.digest }}
