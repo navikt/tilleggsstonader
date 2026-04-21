@@ -70,7 +70,7 @@ jobs:
         run: ./gradlew bootJar -PskipLint
 
       - name: "Last opp docker-image"
-        uses: nais/docker-build-push@45d352fb62fb52ccb5ff6cba22c047fa02b35321 # v0
+        uses: nais/docker-build-push@cd5ec5663feb0e05c3fa374d1fb442605b046c6b # v0
         id: docker-push
         with:
           team: tilleggsstonader
@@ -128,7 +128,7 @@ jobs:
       id-token: write # for nais/login
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - uses: nais/login@c88ada9ce583928e1c84d2fd5c45cfacdd18d5de # v0
+      - uses: nais/login@d6ab5d83f735e9f155eb9d7d29cd20ae46820ea9 # v0
         with:
           team: tilleggsstonader
 
@@ -139,7 +139,7 @@ jobs:
           version: v0.69.2
 
       - name: Kjør Trivy sårbarhetssscanner
-        uses: aquasecurity/trivy-action@264c9c5e188ea085e7377fd77abd17bfbd4e5926 # master
+        uses: aquasecurity/trivy-action@876cf04c63f65e9799bcf1043b584e72469c7143 # master
         with:
           image-ref: '${{ needs.build.outputs.image }}'
           format: 'sarif'
