@@ -42,6 +42,41 @@ spec:
             {{ else -}}
               good
             {{- end }}
+    - name: tilleggsstonader-slack-receiver-daglig
+      slackConfigs:
+        - apiURL:
+            key: apiUrl
+            name: slack-webhook
+          channel: '#tilleggsstønader-alerts-dev'
+          iconEmoji: ":alert:"
+          username: "Alertmanager tilleggsstonader"
+          sendResolved: true
+          title: |-
+            [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ len .Alerts.Firing }}{{ end }}] {{ .CommonLabels.alertname }}
+          text: >-
+            {{ range .Alerts -}}
+            *Alert:* {{ .Labels.alertname }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+
+            *Consequence:* {{ .Annotations.consequence }}
+
+            *Action:* {{ .Annotations.action }}
+
+            *Details:*
+              {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+            {{ end }}
+            {{ end }}
+          color: |-
+            {{ if eq .Status "firing" -}}
+              {{ if eq .CommonLabels.severity "warning" -}}
+                warning
+              {{- else if eq .CommonLabels.severity "critical" -}}
+                danger
+              {{- else -}}
+                #439FE0
+              {{- end -}}
+            {{ else -}}
+              good
+            {{- end }}
 
   route:
     receiver: tilleggsstonader-slack-receiver
@@ -59,7 +94,7 @@ spec:
     repeatInterval: 10m
     routes:
       # Rute for alerts som gjentas maks én gang per dag
-      - receiver: tilleggsstonader-slack-receiver
+      - receiver: tilleggsstonader-slack-receiver-daglig
         matchers:
           - name: namespace
             matchType: "="
