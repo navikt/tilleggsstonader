@@ -15,7 +15,7 @@ on:
         description: 'Node-versjon'
         type: string
         required: false
-        default: '20'
+        default: '24'
 
 jobs:
   build:

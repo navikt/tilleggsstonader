@@ -7,7 +7,7 @@ on:
         description: 'Node-versjon'
         type: string
         required: false
-        default: '18'
+        default: '24'
 
 jobs:
   playwright:
