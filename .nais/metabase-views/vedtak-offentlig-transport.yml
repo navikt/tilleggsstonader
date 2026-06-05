@@ -18,12 +18,12 @@ spec:
     useLegacySql: false
     query: >-
       SELECT v.behandling_id,
-             (r.reise ->> 'reiseId')::uuid                  AS reise_id,
-             min((p.periode -> 'grunnlag' ->> 'fom')::date) AS fom,
-             max((p.periode -> 'grunnlag' ->> 'tom')::date) AS tom,
-             sum((p.periode ->> 'beløp')::numeric)          AS belop
+             JSON_VALUE(reise, '$.reiseId')                           AS reise_id,
+             MIN(DATE(JSON_VALUE(periode, '$.grunnlag.fom')))         AS fom,
+             MAX(DATE(JSON_VALUE(periode, '$.grunnlag.tom')))         AS tom,
+             SUM(SAFE_CAST(JSON_VALUE(periode, '$."beløp"') AS NUMERIC)) AS belop
       FROM datastream_tilleggsstonader_sak.public_vedtak v
-               CROSS JOIN LATERAL jsonb_array_elements(v.data -> 'beregningsresultat' -> 'offentligTransport' -> 'reiser') AS r(reise)
-               CROSS JOIN LATERAL jsonb_array_elements(r.reise -> 'perioder') AS p(periode)
-      WHERE v.data ->> 'type' IN ('INNVILGELSE_DAGLIG_REISE', 'OPPHØR_DAGLIG_REISE')
-      GROUP BY v.behandling_id, (r.reise ->> 'reiseId')::uuid;
+               CROSS JOIN UNNEST(JSON_QUERY_ARRAY(v.data, '$.beregningsresultat.offentligTransport.reiser')) AS reise
+               CROSS JOIN UNNEST(JSON_QUERY_ARRAY(reise, '$.perioder')) AS periode
+      WHERE JSON_VALUE(v.data, '$.type') IN ('INNVILGELSE_DAGLIG_REISE', 'OPPHØR_DAGLIG_REISE')
+      GROUP BY v.behandling_id, JSON_VALUE(reise, '$.reiseId');
