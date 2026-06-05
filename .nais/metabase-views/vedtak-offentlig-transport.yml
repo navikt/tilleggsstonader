@@ -1,0 +1,29 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: view-vedtak-offentlig-transport
+  namespace: tilleggsstonader
+  labels:
+    team: tilleggsstonader
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: merge
+    cnrm.cloud.google.com/project-id: {{project}}
+spec:
+  resourceID: view_vedtak_offentlig-transport
+  description: "View som viser alle daglig-reise vedtak med offentlig transport"
+  datasetRef:
+    external: datastream_tilleggsstonader_sak
+  view:
+    useLegacySql: false
+    query: >-
+      SELECT v.behandling_id,
+             (r.reise ->> 'reiseId')::uuid                  AS reise_id,
+             min((p.periode -> 'grunnlag' ->> 'fom')::date) AS fom,
+             max((p.periode -> 'grunnlag' ->> 'tom')::date) AS tom,
+             sum((p.periode ->> 'beløp')::numeric)          AS belop
+      FROM datastream_tilleggsstonader_sak.public_vedtak v
+               CROSS JOIN LATERAL jsonb_array_elements(v.data -> 'beregningsresultat' -> 'offentligTransport' -> 'reiser') AS r(reise)
+               CROSS JOIN LATERAL jsonb_array_elements(r.reise -> 'perioder') AS p(periode)
+      WHERE v.data ->> 'type' IN ('INNVILGELSE_DAGLIG_REISE', 'OPPHØR_DAGLIG_REISE')
+      GROUP BY v.behandling_id, (r.reise ->> 'reiseId')::uuid;
