@@ -23,6 +23,8 @@ jobs:
             .nais/metabase-views/sett-pa-vent-arsaker.yml,\
             .nais/metabase-views/sett-pa-vent-varighet.yml,\
             .nais/metabase-views/totrinn-arsaker-til-retur.yml,\
+            .nais/metabase-views/vedtak-offentlig-transport.yml,\
+            .nais/metabase-views/vedtak-privat-bil.yml,\
             .nais/metabase-views/saksbehandling.yml"
           VAR: project=${{ inputs.project }}
           PRINT_PAYLOAD: true
