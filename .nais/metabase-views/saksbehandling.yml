@@ -8,7 +8,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/state-into-spec: merge
-    cnrm.cloud.google.com/project-id: tilleggsstonader-dev-371d
+    cnrm.cloud.google.com/project-id: {{project}}
 spec:
   resourceID: view_saksbehandling
   description: "View som viser behandlinger med tilhørende fagsak"
