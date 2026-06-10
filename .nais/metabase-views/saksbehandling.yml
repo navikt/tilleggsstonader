@@ -8,7 +8,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/state-into-spec: merge
-    cnrm.cloud.google.com/project-id: {{project}}
+    cnrm.cloud.google.com/project-id: tilleggsstonader-dev-371d
 spec:
   resourceID: view_saksbehandling
   description: "View som viser behandlinger med tilhørende fagsak"
@@ -17,6 +17,18 @@ spec:
   view:
     useLegacySql: false
     query: >-
+      WITH gjeldende_iverksatt_behandlinger AS (
+        SELECT behandling_id
+        FROM (
+          SELECT
+            b.id AS behandling_id,
+            ROW_NUMBER() OVER (PARTITION BY b.fagsak_id ORDER BY b.vedtakstidspunkt DESC) AS rn
+          FROM datastream_tilleggsstonader_sak.public_behandling b
+          WHERE b.resultat IN ('OPPHØRT', 'INNVILGET')
+            AND b.status = 'FERDIGSTILT'
+        )
+        WHERE rn = 1
+      )
       SELECT 
         b.id as behandling_id,
         b.type,
@@ -30,6 +42,8 @@ spec:
         fagsak.stonadstype as stonadstype,
         b.opprettet_tid,
         CASE WHEN b.opprettet_av = 'VL' THEN true ELSE false END as opprettet_automatisk,
+        CASE WHEN gjeldende.behandling_id IS NOT NULL THEN true ELSE false END as er_gjeldende_iverksatt_behandling,
         b.endret_tid
       FROM datastream_tilleggsstonader_sak.public_behandling b
-      JOIN datastream_tilleggsstonader_sak.public_fagsak fagsak on b.fagsak_id = fagsak.id;
+      JOIN datastream_tilleggsstonader_sak.public_fagsak fagsak ON b.fagsak_id = fagsak.id
+      LEFT JOIN gjeldende_iverksatt_behandlinger gjeldende ON gjeldende.behandling_id = b.id;
