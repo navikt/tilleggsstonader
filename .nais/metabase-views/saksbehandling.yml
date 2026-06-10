@@ -39,6 +39,7 @@ spec:
         b.henlagt_arsak,
         b.vedtakstidspunkt,
         b.nye_opplysninger_kilde,
+        b.behandling_metode,
         fagsak.stonadstype as stonadstype,
         b.opprettet_tid,
         CASE WHEN b.opprettet_av = 'VL' THEN true ELSE false END as opprettet_automatisk,
