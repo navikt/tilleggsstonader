@@ -1,8 +1,8 @@
 {
   "collection": "platform",
-  "version": "2026.06.24-071557-1b59278",
+  "version": "2026.06.25-072030-1ae3959",
   "scope": "repo",
-  "source_sha": "1b59278",
+  "source_sha": "1ae3959",
   "installed_at": "2026-06-01T13:35:34Z",
   "files": [
     {
