@@ -53,10 +53,10 @@ jobs:
       digest: ${{ steps.docker-push.outputs.digest }}
     steps:
       - name: Sjekk ut koden
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Sett opp Node ${{ inputs.node-version }}
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: ${{ inputs.node-version }}
           cache: yarn
@@ -84,7 +84,7 @@ jobs:
     permissions:
       id-token: "write"
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: navikt/tilleggsstonader/.github/actions/attest-sign@3d7a1dfe34c2ee71819088812888d7924a5b356c # main
         with:
           digest: ${{ needs.build.outputs.digest }}
@@ -96,7 +96,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Sjekk ut koden
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Deploy til ${{ inputs.dev-cluster }}
         uses: nais/deploy/actions/deploy@5fdd91aaf69bb0d6dd5e5118cdacb639f487b93b # v2
@@ -112,7 +112,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Sjekk ut koden
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Deploy til ${{ inputs.prod-cluster }}
         uses: nais/deploy/actions/deploy@5fdd91aaf69bb0d6dd5e5118cdacb639f487b93b # v2

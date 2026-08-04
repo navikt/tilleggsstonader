@@ -40,7 +40,7 @@ jobs:
       image: ${{ steps.docker-push.outputs.image }}
       digest: ${{ steps.docker-push.outputs.digest }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
 
@@ -50,7 +50,7 @@ jobs:
           java-version: 21
           cache: gradle
 
-      - uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
+      - uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6
 
       - name: "Kjør tester"
         run: ./gradlew test -PskipLint
@@ -72,7 +72,7 @@ jobs:
     permissions:
       id-token: "write"
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: navikt/tilleggsstonader/.github/actions/attest-sign@3d7a1dfe34c2ee71819088812888d7924a5b356c # main
         with:
           digest: ${{ needs.build.outputs.digest }}
@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - uses: nais/deploy/actions/deploy@5fdd91aaf69bb0d6dd5e5118cdacb639f487b93b # v2
         env:
