@@ -1,8 +1,8 @@
 {
   "collection": "platform",
-  "version": "2026.06.26-055820-fa64632",
+  "version": "2026.07.01-205322-ecb3952",
   "scope": "repo",
-  "source_sha": "fa64632",
+  "source_sha": "ecb3952",
   "installed_at": "2026-06-01T13:35:34Z",
   "files": [
     {
