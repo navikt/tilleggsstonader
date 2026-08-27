@@ -55,7 +55,7 @@ jobs:
       - name: Installer avhengigheter
         run: pnpm install --frozen-lockfile
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+          NPM_CONFIG_//npm.pkg.github.com/:_authToken: ${{ secrets.READER_TOKEN }}
 
       - name: Bygg app
         run: pnpm run build

@@ -24,7 +24,7 @@ jobs:
       - name: Installer avhengigheter
         run: pnpm install --frozen-lockfile
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+          NPM_CONFIG_//npm.pkg.github.com/:_authToken: ${{ secrets.READER_TOKEN }}
       - name: Get Playwright version
         run: |
           PLAYWRIGHT_VERSION=$(node -e "console.log(require('@playwright/test/package.json').version)")
