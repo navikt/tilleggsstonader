@@ -21,6 +21,8 @@ jobs:
     name: Bygg app
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      NPM_CONFIG_//npm.pkg.github.com/:_authToken: ${{ secrets.READER_TOKEN }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: pnpm/setup@bf5bfae7d43e2b2b1191383f5005cd3fb69b848d # v2.0.2
@@ -30,7 +32,5 @@ jobs:
           install: false
       - name: Installer avhengigheter
         run: pnpm install --frozen-lockfile
-        env:
-          NPM_CONFIG_//npm.pkg.github.com/:_authToken: ${{ secrets.READER_TOKEN }}
       - name: Bygg app
         run: pnpm run build

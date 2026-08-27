@@ -40,6 +40,8 @@ jobs:
     name: Bygg og last opp docker-image
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+      NPM_CONFIG_//npm.pkg.github.com/:_authToken: ${{ secrets.READER_TOKEN }}
     outputs:
       image: ${{ steps.docker-push.outputs.image }}
     steps:
@@ -54,8 +56,6 @@ jobs:
 
       - name: Installer avhengigheter
         run: pnpm install --frozen-lockfile
-        env:
-          NPM_CONFIG_//npm.pkg.github.com/:_authToken: ${{ secrets.READER_TOKEN }}
 
       - name: Bygg app
         run: pnpm run build
