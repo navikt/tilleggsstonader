@@ -1,0 +1,83 @@
+name: Bygg og deploy app (pnpm)
+
+# ------------------------------------------------------------
+# Denne workflowen bygger en TypeScript-applikasjon som bruker pnpm,
+# pusher docker-image til GAR og deployerer det hele til et valgfritt miljø.
+#
+# Forutsetninger: Repoet som kaller denne jobben må ha definert:
+#  - build: Bygger prod-versjon av appen
+#
+# Kallende GitHub Actions-jobb må sette følgende rettigheter:
+#
+# permissions:
+#   id-token: write  # Trengs for deploy til GCP
+#   packages: write
+# ------------------------------------------------------------
+
+on:
+  workflow_call:
+    inputs:
+      cluster:
+        description: 'Cluster det skal deployes til'
+        required: true
+        type: string
+      manifest:
+        description: 'Sti til Nais-manifestet'
+        required: true
+        type: string
+      node-version:
+        description: 'Node-versjon'
+        type: string
+        required: false
+        default: '24'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Bygg og last opp docker-image
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      image: ${{ steps.docker-push.outputs.image }}
+    steps:
+      - name: Sjekk ut koden
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: pnpm/setup@bf5bfae7d43e2b2b1191383f5005cd3fb69b848d # v2.0.2
+        with:
+          runtime: node@${{ inputs.node-version }}
+          cache: true
+          install: false
+
+      - name: Installer avhengigheter
+        run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+
+      - name: Bygg app
+        run: pnpm run build
+
+      - name: Last opp docker-image
+        uses: nais/docker-build-push@31c3a7321909bcb20799fdf46153fec721fd9512 # v0
+        id: docker-push
+        with:
+          team: tilleggsstonader
+
+  deploy:
+    name: Deploy til ${{ inputs.cluster }}
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Sjekk ut koden
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Deploy til ${{ inputs.cluster }}
+        uses: nais/deploy/actions/deploy@5fdd91aaf69bb0d6dd5e5118cdacb639f487b93b # v2
+        env:
+          CLUSTER: ${{ inputs.cluster }}
+          RESOURCE: ${{ inputs.manifest }}
+          IMAGE: ${{ needs.build.outputs.image }}

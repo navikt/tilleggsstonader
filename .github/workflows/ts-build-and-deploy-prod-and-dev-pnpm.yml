@@ -1,0 +1,120 @@
+name: Bygg og deploy til prod og dev (pnpm)
+
+# ------------------------------------------------------------
+# Denne workflowen bygger en TypeScript-applikasjon som bruker pnpm,
+# pusher docker-image til GAR og deployerer det hele til et prod- og et dev-miljø.
+#
+# Forutsetninger: Repoet som kaller denne jobben må ha definert:
+#  - build: Bygger prod-versjon av appen
+#
+# Kallende GitHub Actions-jobb må også sette følgende rettigheter:
+#
+# permissions:
+#   id-token: write  # Trengs for deploy til GCP
+# ------------------------------------------------------------
+
+on:
+  workflow_call:
+    inputs:
+      prod-cluster:
+        description: 'Prod-cluster det skal deployes til'
+        type: string
+        required: true
+      prod-manifest:
+        description: 'Sti til Nais-manifestet for prod'
+        type: string
+        required: true
+      dev-cluster:
+        description: 'Dev-cluster det skal deployes til'
+        type: string
+        required: true
+      dev-manifest:
+        description: 'Sti til Nais-manifestet for dev'
+        type: string
+        required: true
+      node-version:
+        description: 'Node-versjon'
+        type: string
+        required: false
+        default: '24'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and push Docker container
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      image: ${{ steps.docker-push.outputs.image }}
+      digest: ${{ steps.docker-push.outputs.digest }}
+    steps:
+      - name: Sjekk ut koden
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: pnpm/setup@bf5bfae7d43e2b2b1191383f5005cd3fb69b848d # v2.0.2
+        with:
+          runtime: node@${{ inputs.node-version }}
+          cache: true
+          install: false
+
+      - name: Installer avhengigheter
+        run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+
+      - name: Bygg app
+        run: pnpm run build
+
+      - name: Last opp docker-image
+        uses: nais/docker-build-push@31c3a7321909bcb20799fdf46153fec721fd9512 # v0
+        id: docker-push
+        with:
+          team: tilleggsstonader
+          salsa: false
+
+  salsa:
+    name: "Attester og signer SBOM"
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: "write"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: navikt/tilleggsstonader/.github/actions/attest-sign@3d7a1dfe34c2ee71819088812888d7924a5b356c # main
+        with:
+          digest: ${{ needs.build.outputs.digest }}
+
+  deploy_dev:
+    name: Deploy til ${{ inputs.dev-cluster }}
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Sjekk ut koden
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Deploy til ${{ inputs.dev-cluster }}
+        uses: nais/deploy/actions/deploy@5fdd91aaf69bb0d6dd5e5118cdacb639f487b93b # v2
+        env:
+          CLUSTER: ${{ inputs.dev-cluster }}
+          RESOURCE: ${{ inputs.dev-manifest }}
+          IMAGE: ${{ needs.build.outputs.image }}
+
+  deploy_prod:
+    name: Deploy til ${{ inputs.prod-cluster }}
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Sjekk ut koden
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Deploy til ${{ inputs.prod-cluster }}
+        uses: nais/deploy/actions/deploy@5fdd91aaf69bb0d6dd5e5118cdacb639f487b93b # v2
+        env:
+          CLUSTER: ${{ inputs.prod-cluster }}
+          RESOURCE: ${{ inputs.prod-manifest }}
+          IMAGE: ${{ needs.build.outputs.image }}
