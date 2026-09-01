@@ -1,0 +1,54 @@
+name: Kjør Playwright-tester (pnpm)
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: 'Node-versjon'
+        type: string
+        required: false
+        default: '24'
+
+jobs:
+  playwright:
+    name: Kjører Playwright-tester
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: pnpm/setup@bf5bfae7d43e2b2b1191383f5005cd3fb69b848d # v2.0.2
+        with:
+          runtime: node@${{ inputs.node-version }}
+          cache: true
+          install: false
+      - name: Konfigurer GitHub Packages auth
+        run: pnpm config set "//npm.pkg.github.com/:_authToken" "$READER_TOKEN"
+        env:
+          READER_TOKEN: ${{ secrets.READER_TOKEN }}
+      - name: Installer avhengigheter
+        run: pnpm install --frozen-lockfile
+      - name: Get Playwright version
+        run: |
+          PLAYWRIGHT_VERSION=$(node -e "console.log(require('@playwright/test/package.json').version)")
+          echo "Playwright's Version: $PLAYWRIGHT_VERSION"
+          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
+      - name: Cache playwright browsers
+        id: cache-playwright-browsers
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
+      - name: Install Playwright Browsers
+        if: ${{ (steps.cache-playwright-browsers.outputs.cache-hit != 'true' )}}
+        run: pnpm exec playwright install chromium --with-deps
+      - name: Kjør Playwright-tester
+        env:
+          CI: true # settes sånn at CI ikke kjører tester parallell
+        run: pnpm exec playwright test
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+          if-no-files-found: ignore
