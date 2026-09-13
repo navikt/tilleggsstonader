@@ -85,3 +85,27 @@ spec:
             severity: critical
             alert_type: custom
             repeat_interval: daglig
+
+        - alert: Pod i CrashLoopBackOff
+          expr: max by (namespace, pod) (kube_pod_container_status_waiting_reason{namespace="tilleggsstonader", reason="CrashLoopBackOff"}) > 0
+          for: 5m
+          annotations:
+            consequence: "Pod {{ $labels.pod }} klarer ikke å starte opp og restarter gjentatte ganger"
+            action: "Sjekk logger for pod'en, sannsynligvis feil i oppstart (config, tilkobling til DB/Kafka, migrasjon feilet)"
+          labels:
+            namespace: tilleggsstonader
+            severity: critical
+            alert_type: custom
+            repeat_interval: daglig
+
+        - alert: Rollout stuck
+          expr: max by (namespace, deployment) (kube_deployment_status_condition{namespace="tilleggsstonader", condition="Progressing", status="false"}) == 1
+          for: 5m
+          annotations:
+            consequence: "Utrullingen av deployment {{ $labels.deployment }} stopper opp — nye pods blir ikke friske"
+            action: "Sjekk om ny versjon feiler ved oppstart, evt. rull tilbake"
+          labels:
+            namespace: tilleggsstonader
+            severity: critical
+            alert_type: custom
+            repeat_interval: daglig
