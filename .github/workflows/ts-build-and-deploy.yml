@@ -65,7 +65,7 @@ jobs:
         run: yarn build
 
       - name: Last opp docker-image
-        uses: nais/docker-build-push@0e73849f69ff260ee27597553c0a7848ca4e9795 # v0
+        uses: nais/docker-build-push@423a915c9b72edf2ba848b88171ccb0489e2a40a # v0
         id: docker-push
         with:
           team: tilleggsstonader
@@ -80,7 +80,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Deploy til ${{ inputs.cluster }}
-        uses: nais/deploy/actions/deploy@027a91857992525139798892f2804b0ca21f4af6 # v2
+        uses: nais/deploy/actions/deploy@7ad7c2b833e1db74a80954e3ee6bb6ac060a8ae7 # v2
         env:
           CLUSTER: ${{ inputs.cluster }}
           RESOURCE: ${{ inputs.manifest }}
