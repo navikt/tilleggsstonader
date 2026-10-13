@@ -67,8 +67,8 @@ jobs:
           AUTHOR=$(jq -r '.author.login' <<< "$PR_JSON")
           HAS_LABEL=$(jq -r '[.labels[].name] | any(. == "dependencies")' <<< "$PR_JSON")
 
-          if [[ "$AUTHOR" != "github-actions[bot]" ]]; then
-            echo "::error::PR #$PR_NUMBER er opprettet av '$AUTHOR', ikke github-actions[bot]. Avbryter automerge."
+          if [[ "$AUTHOR" != "app/github-actions" ]]; then
+            echo "::error::PR #$PR_NUMBER er opprettet av '$AUTHOR', ikke app/github-actions. Avbryter automerge."
             exit 1
           fi
 
