@@ -48,6 +48,9 @@ jobs:
       - name: Find and automerge sync PR
         env:
           GH_TOKEN: ${{ github.token }}
+          # Ingen checkout: gh trenger repoet eksplisitt. I en reusable workflow
+          # er github.repository kalleren, ikke metarepoet.
+          GH_REPO: ${{ github.repository }}
           BRANCH: ${{ inputs.branch }}
           MERGE_METHOD: ${{ inputs.merge-method }}
         run: |
