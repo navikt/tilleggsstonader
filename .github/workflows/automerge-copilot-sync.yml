@@ -1,0 +1,78 @@
+name: Automerge Copilot Sync PR
+
+# Reusable workflow: merges the PR opened by copilot-customization-sync
+# once it is open, without waiting for manual review. Each consuming repo
+# must have "Allow auto-merge" enabled in repo settings — the merge is a
+# no-op if no open PR is found on the sync branch.
+#
+# Usage: add as a second job in the repo's copilot-sync.yml, after the
+# sync job:
+#
+#   jobs:
+#     sync:
+#       uses: navikt/copilot/.github/workflows/copilot-customization-sync.yml@main
+#       permissions:
+#         contents: write
+#         pull-requests: write
+#     automerge:
+#       needs: sync
+#       uses: navikt/tilleggsstonader/.github/workflows/automerge-copilot-sync.yml@main
+#       permissions:
+#         pull-requests: write
+#         contents: write
+
+on:
+  workflow_call:
+    inputs:
+      branch:
+        description: 'Branch name the sync workflow opens its PR from'
+        type: string
+        required: false
+        default: 'copilot-customization-sync'
+      merge-method:
+        description: 'Merge method (merge, squash, rebase)'
+        type: string
+        required: false
+        default: 'squash'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    name: Enable automerge on sync PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Find and automerge sync PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ inputs.branch }}
+          MERGE_METHOD: ${{ inputs.merge-method }}
+        run: |
+          PR_NUMBER=$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number')
+          if [[ -z "$PR_NUMBER" || "$PR_NUMBER" == "null" ]]; then
+            echo "Ingen åpen sync-PR funnet på branch $BRANCH, hopper over."
+            exit 0
+          fi
+
+          # Branch-navn alene er ikke en tillitsgrense: krev at PR-en faktisk
+          # er opprettet av sync-jobben (github-actions[bot], signerte commits)
+          # og bærer labelen create-pull-request setter, før vi automerger den.
+          PR_JSON=$(gh pr view "$PR_NUMBER" --json author,labels)
+          AUTHOR=$(jq -r '.author.login' <<< "$PR_JSON")
+          HAS_LABEL=$(jq -r '[.labels[].name] | any(. == "dependencies")' <<< "$PR_JSON")
+
+          if [[ "$AUTHOR" != "github-actions[bot]" ]]; then
+            echo "::error::PR #$PR_NUMBER er opprettet av '$AUTHOR', ikke github-actions[bot]. Avbryter automerge."
+            exit 1
+          fi
+
+          if [[ "$HAS_LABEL" != "true" ]]; then
+            echo "::error::PR #$PR_NUMBER mangler label 'dependencies'. Avbryter automerge."
+            exit 1
+          fi
+
+          echo "Automerger PR #$PR_NUMBER (--$MERGE_METHOD)"
+          gh pr merge --auto "--$MERGE_METHOD" "$PR_NUMBER"
