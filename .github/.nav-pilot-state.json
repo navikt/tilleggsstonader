@@ -1,8 +1,8 @@
 {
   "collection": "nav-pilot",
-  "version": "2026.10.13-095023-a1b831c",
+  "version": "2026.10.13-214524-d66b802",
   "scope": "repo",
-  "source_sha": "ef55aebbd241755599209e3ee8f178492756c7c9",
+  "source_sha": "00105ddba340d916ef5e778a6edf4e7e4f1fbdc5",
   "installed_at": "2026-06-01T13:35:34Z",
   "files": [
     {
@@ -16,8 +16,8 @@
     },
     {
       "path": ".github/agents/nav-pilot.agent.md",
-      "hash": "018471685b00d5b7",
-      "revision": "ef55aebbd241755599209e3ee8f178492756c7c9"
+      "hash": "92bc5b172dd16b1f",
+      "revision": "00105ddba340d916ef5e778a6edf4e7e4f1fbdc5"
     },
     {
       "path": ".github/agents/research.agent.md",
@@ -116,6 +116,10 @@
     {
       "path": ".github/skills/api-design/",
       "hash": "a353aded69a4bd4c"
+    },
+    {
+      "path": ".github/skills/appsec-advisory/",
+      "hash": "df4553adf505e61d"
     },
     {
       "path": ".github/skills/conventional-commit/",
