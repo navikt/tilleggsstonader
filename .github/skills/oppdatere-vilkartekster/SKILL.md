@@ -39,6 +39,10 @@ Kommandoer i htmlify uten yarn:
 Be om gammel og ny tekst hvis brukeren ikke har oppgitt dem. Spør også hvilke
 stønadstyper og vilkår endringen gjelder, hvis det ikke er tydelig.
 
+Lag et regulært uttrykk for den nye teksten som brukes til å verifisere i steg 2 og 7,
+for eksempel `Er utgiften nødvendig`. Skriv det uten `?` og `:` på slutten, så det treffer
+både frontend og internt vedtak.
+
 ## 1. Finn og oppdater teksten i sak-frontend
 
 Søk i hele `tilleggsstonader-sak-frontend/src/frontend` etter teksten brukeren oppgir.
@@ -59,15 +63,47 @@ Søk i `tilleggsstonader-htmlify/src/internt-vedtak` (særlig `typer/`, `vilkår
 `VilkårContent.tsx`, `VilkårFakta.tsx`) etter samme tekst. Teksten i internt vedtak
 kan være formulert annerledes enn i frontend, så søk også på nøkkelord og enum-navn.
 
-Finner du ingen tilsvarende tekst i htmlify, stopp og spør brukeren om htmlify
-skal endres eller hoppes over. Ikke gå videre uten svar.
+Søk også i `tilleggsstonader-sak/src/main` (særlig `RegelId.kt`, parameteren
+`beskrivelse`). Spørsmålstekster for vilkårregler står både i `tekster.ts` i frontend og
+i `RegelId.kt`. Strengen kan være brutt over flere linjer, så søk på en kort del av den.
+Teksten fra `RegelId.kt` havner i `internt_vedtak.json` (feltet `regel`) og i html.
 
-Endres kontrakten mot sak (`typer/`), må
+Treff i `RegelId.kt` og frontend, men ikke i htmlify, er normalt for regelspørsmål.
+htmlify viser `regel` som den er, og trenger ingen endring. Si fra til brukeren om det
+og gå videre. Finner du ingenting i htmlify og heller ikke i `RegelId.kt` eller
+`internt_vedtak.json`, stopp og spør brukeren om htmlify skal endres eller hoppes over.
+
+Er teksten bare i frontend (ingen treff i htmlify, `RegelId.kt` eller eksemplene i sak),
+hopp over steg 3 til 7 og si fra om det i rapporten.
+
+Endres kontrakten mot sak (`typer/`) eller `RegelId.kt`, må
 `tilleggsstonader-sak/src/test/resources/interntVedtak/*/internt_vedtak.json`
-trolig oppdateres. Test med `json til htmlify er riktig`.
+oppdateres. Test med `json til htmlify er riktig`. Ikke bruk `SKRIV_TIL_FIL=true` for å
+skrive json-filene: de committede filene er ikke sortert slik testen skriver dem, så
+diffen blir flere hundre linjer per fil. Bytt i stedet bare den gamle teksten med den nye
+i berørte `internt_vedtak.json` (testen sammenligner semantisk).
+
+Kjør også regeltestene i sak når `RegelId.kt` er endret:
+`./gradlew cleanTest test --tests "no.nav.tilleggsstonader.sak.vilkår.stønadsvilkår.regler.*"`.
 
 Søk også etter teksten i `tilleggsstonader-docs` og i `.feature`-filer i sak, og si fra
 om treff uten å endre dem.
+
+Før du endrer noe, lag en samlet liste over alle treff på den gamle teksten i
+frontend, htmlify og `interntVedtak/*/internt_vedtak.html`:
+
+```bash
+grep -rn -I --exclude='.env*' "<gammel tekst>" tilleggsstonader-sak-frontend/src tilleggsstonader-htmlify/src \
+  tilleggsstonader-sak/src/test/resources/interntVedtak
+```
+
+`--exclude='.env*'` hindrer «Operation not permitted» fra sandboxen
+(`tilleggsstonader-sak-frontend/src/backend/.env`).
+
+Etter at hele skillen er kjørt (og alle `internt_vedtak.html` er regenerert), skal samme
+søk ikke gi treff i frontend og htmlify. I html-filene skal treff finnes bare for
+stønadstyper som ikke berøres. Gjenstående treff i frontend eller htmlify betyr at en
+forekomst er glemt.
 
 Kjør lint i `tilleggsstonader-htmlify` etter endringen. Blir en tekst kortere, slår
 prettier ofte sammen linjer. Kjør da `eslint --fix` på filen og lint på nytt.
@@ -112,12 +148,16 @@ rapporten at dette ikke ble sjekket.
 Start først når lint er grønt. `tsx` uten `watch` leser ikke nye endringer, så
 restart tjenesten hvis du endrer htmlify etter oppstart.
 
+Start tjenesten i bakgrunnen med `nohup` i en subshell, så kommandoen returnerer med en
+gang. Dette fungerte bedre enn async-modus i verktøyet:
+
 ```bash
-cd tilleggsstonader-htmlify && NODE_ENV=development node_modules/.bin/tsx src/server.ts
+cd tilleggsstonader-htmlify
+(NODE_ENV=development nohup node_modules/.bin/tsx src/server.ts > /tmp/htmlify.log 2>&1 &)
+sleep 6; lsof -ti :8001
 ```
 
-Kjør kommandoen som async prosess. Tjenesten lytter på port 8001. Les PID med
-`lsof -ti :8001` i en egen kommando. Du stopper tjenesten med `kill <PID>` med PID som
+Tjenesten lytter på port 8001. `lsof -ti :8001` gir PID. Du stopper tjenesten med `kill <PID>` med PID som
 tall (`kill $(...)`, variabler og `pkill` er ikke tillatt).
 Verifiser før du går videre:
 
@@ -163,30 +203,33 @@ Stopp htmlify med `kill <PID>` når genereringen er ferdig.
 
 ## 6. Formater html-filene i IntelliJ
 
-Bruk IntelliJs MCP-server. Verktøyet `reformat_file` bruker prosjektets kodestil og gir
-samme resultat som `Reformat Code`. Etter formatering faller diffen fra ca. 600 linjer
-til noen få linjer per fil.
+Bruk skriptet `format-html.sh` ved siden av denne filen. Det kaller IntelliJs
+MCP-verktøy `reformat_file`, som bruker prosjektets kodestil og gir samme resultat som
+`Reformat Code`. Etter formatering faller diffen fra ca. 600 linjer til noen få linjer
+per fil.
+
+```bash
+.github/skills/oppdatere-vilkartekster/format-html.sh "$PWD/tilleggsstonader-sak"
+```
 
 Forutsetninger (utenom sandboxen, gjøres av brukeren):
 
 - IntelliJ kjører med `tilleggsstonader-sak` åpent som prosjekt.
-- `Settings | Tools | MCP Server` er slått på.
+- `Settings | Tools | MCP Server` er slått på. Er porten en annen enn 64342, sett
+  `IJ_MCP_URL` (se `Copy Config` i samme innstilling).
 - Sandboxen tillater localhost mot IntelliJ (`sandbox.allow_localhost_any true`).
 
-Er IntelliJ-verktøyet registrert i Copilot CLI, kall `reformat_file` direkte. Ellers kan
-du snakke MCP over HTTP mot streamable-endpointet (port 64342, se
-`Settings | Tools | MCP Server | Copy Config` for riktig URL):
+Skriptet venter noen sekunder først, fordi IntelliJ ikke alltid har oppdatert filer som
+Gradle nettopp skrev. `reformat_file` svarer `ok` selv når den ikke har formatert en fil,
+så skriptet kontrollerer diffen etterpå. Filer med mer enn 50 endrede linjer regnes som
+uformaterte, og skriptet formaterer dem på nytt (opptil tre ganger). Exit-kode 0 betyr at
+alle filene er formatert.
 
-1. `POST /stream` med `initialize`, og les `mcp-session-id` fra svar-headeren.
-2. `POST` `notifications/initialized` med samme `mcp-session-id`.
-3. `POST` `tools/call` med `name: reformat_file` og
-   `arguments: {"projectPath": "<absolutt sti til tilleggsstonader-sak>", "files": ["<prosjekt-relative stier>"]}`.
+Er IntelliJ-verktøyet registrert i Copilot CLI, kan du i stedet kalle `reformat_file`
+direkte, men husk å kontrollere diffen selv.
 
-Alle header-kall bruker `Content-Type: application/json` og
-`Accept: application/json, text/event-stream`. Verktøyet svarer `ok` når det er ferdig.
-Send alle html-filene i ett kall.
-
-Svarer ikke MCP-serveren, eller feiler kallet, be brukeren kjøre `Reformat Code` på hver
+Svarer ikke MCP-serveren, eller gir skriptet exit-kode 1, be brukeren kjøre
+`Reformat Code` på hver
 `tilleggsstonader-sak/src/test/resources/interntVedtak/*/internt_vedtak.html`, og vent på
 bekreftelse. `idea format` og `prettier` er ikke alternativer: `idea format` virker ikke i
 sandboxen, og `prettier` gir et format som avviker fra IntelliJ (over 1000 linjer diff per fil).
@@ -199,12 +242,14 @@ ekstra tom linje i `<style>` i alle html-filene, fordi de committede filene er e
 dagens htmlify. Begge deler er støy som ikke hører til endringen.
 
 Tilbakestill html og PDF for stønadstyper der den nye teksten ikke finnes i html-diffen.
-Bytt ut `<ny tekst>` med det regulære uttrykket for den nye teksten:
+Bruk det regulære uttrykket fra steg 0 som `NY_TEKST`, for eksempel
+`NY_TEKST="Er utgiften nødvendig"`:
 
 ```bash
+NY_TEKST="<regulært uttrykk fra steg 0>"
 cd tilleggsstonader-sak/src/test/resources/interntVedtak
 for d in */; do
-  git diff -U0 -- "$d/internt_vedtak.html" | grep -q "^+.*<ny tekst>" \
+  git diff -U0 -- "$d/internt_vedtak.html" | grep -q "^+.*$NY_TEKST" \
     || git checkout -- "$d/internt_vedtak.html" "$d/internt_vedtak.pdf"
 done
 ```
@@ -229,7 +274,7 @@ List endrede filer per repo og minn brukeren på at ingenting er committet:
 
 - `tilleggsstonader-sak-frontend`: tekstfiler
 - `tilleggsstonader-htmlify`: komponenter/typer
-- `tilleggsstonader-sak`: `internt_vedtak.html` og `internt_vedtak.pdf` for berørte stønadstyper (begge skal committes)
+- `tilleggsstonader-sak`: `RegelId.kt` (hvis regeltekst), og `internt_vedtak.html`, `.pdf` og `.json` for berørte stønadstyper (alle skal committes)
 
 Ta også med avvik: PDF-er som ikke ble generert, at htmlify-sjekken i steg 3 ikke
 kunne gjøres, og eventuelle treff i docs eller `.feature`-filer.
