@@ -1,6 +1,7 @@
 .idea
 .gradle
 .ds_store
+.pnpm-store
 
 node_modules
 
