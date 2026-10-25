@@ -1,14 +1,14 @@
 {
   "collection": "nav-pilot",
-  "version": "2026.10.23-214925-f431a28",
+  "version": "2026.10.25-034335-3e799c9",
   "scope": "repo",
-  "source_sha": "f431a286d9a8006639ca768df74a7d18d5b4351d",
+  "source_sha": "3e799c97cbe2e12d64a6eba72cbf5a79c2e21657",
   "installed_at": "2026-06-01T13:35:34Z",
   "files": [
     {
       "path": ".github/agents/code-review.agent.md",
-      "hash": "811b2a6765ff86de",
-      "revision": "f1f3393973e26deb7dd16dace4be655f8400800c"
+      "hash": "fa76255226b84d06",
+      "revision": "3e799c97cbe2e12d64a6eba72cbf5a79c2e21657"
     },
     {
       "path": ".github/agents/nav-pilot-opus.agent.md",
@@ -16,8 +16,8 @@
     },
     {
       "path": ".github/agents/nav-pilot.agent.md",
-      "hash": "1b67c4cd0ebd73aa",
-      "revision": "f431a286d9a8006639ca768df74a7d18d5b4351d"
+      "hash": "763a798b28967762",
+      "revision": "3e799c97cbe2e12d64a6eba72cbf5a79c2e21657"
     },
     {
       "path": ".github/agents/research.agent.md",
@@ -115,7 +115,8 @@
     },
     {
       "path": ".github/skills/aksel-builder/",
-      "hash": "3075f3a92c2eb6fc"
+      "hash": "8bb00941b6cd738a",
+      "revision": "3e799c97cbe2e12d64a6eba72cbf5a79c2e21657"
     },
     {
       "path": ".github/skills/api-design/",
@@ -179,7 +180,8 @@
     },
     {
       "path": ".github/skills/nav-deep-interview/",
-      "hash": "eeb3399ecd4e352c"
+      "hash": "c830bf6956bda64f",
+      "revision": "3e799c97cbe2e12d64a6eba72cbf5a79c2e21657"
     },
     {
       "path": ".github/skills/nav-dekoratoren/",
