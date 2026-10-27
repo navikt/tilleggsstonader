@@ -2,7 +2,7 @@
 
 ## Oversikt
 
-Dette er et meta-repo (via [meta](https://github.com/mateodelnorte/meta)) som samler alle repoene til team tilleggsstønader. Hvert sub-prosjekt er et selvstendig Git-repo inkludert som Gradle composite build via `settings.gradle.kts`.
+Dette er et meta-repo (via [meta fra gitkb](https://github.com/gitkb/meta)) som samler alle repoene til team tilleggsstønader. Vi bruker Rust-implementasjonen, installert med `brew install gitkb/tap/meta-cli`, ikke npm-pakken `meta`. Repoene er definert i `.meta`. Nye repoer legges til der og klones med `meta git update`; `meta project import` støttes ikke. Hvert sub-prosjekt er et selvstendig Git-repo inkludert som Gradle composite build via `settings.gradle.kts`.
 
 ### Sub-prosjekter
 
