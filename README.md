@@ -4,24 +4,35 @@ Startpunkt (metarepo) for tilleggsstønader
 
 ## Komme i gang
 
-[meta](https://github.com/mateodelnorte/meta) brukes til å sette opp
-repositories for alle repoene.
+[meta fra gitkb](https://github.com/gitkb/meta) brukes til å klone og administrere
+teamets repoer. Vi bruker Rust-implementasjonen, ikke den gamle npm-pakken.
 
-Enn så lenge må du sørge for å ha `npm` installert (`brew install node`).
+Har du installert den gamle pakken med npm, fjern den først:
 
+```bash
+npm uninstall --global meta
 ```
-npm install meta -g --no-save
+
+Installer den nye pakken med Homebrew:
+
+```bash
+brew install gitkb/tap/meta-cli
+meta --version
 ```
 
-Merk! meta foran vanlig clone-kommando:
+Meta krever ikke Node.js eller npm. For andre plattformer, se
+[installasjonsveiledningen](https://github.com/gitkb/meta#installation).
 
-```
+Klon dette repoet og alle underrepoene med:
+
+```bash
 meta git clone git@github.com:navikt/tilleggsstonader.git
 ```
 
-Nå kan git brukes som normalt for hvert repo.
+Git kan brukes som normalt i hvert underrepo. Eksisterende kloner trenger ikke
+klones på nytt: Den nye pakken leser samme [`.meta`](./.meta)-fil og bruker samme mapper.
 
-Se [meta](https://github.com/mateodelnorte/meta) for flere kommandoer.
+Se [meta](https://github.com/gitkb/meta#commands) for flere kommandoer.
 
 Dersom du nå åpner `build.gradle` med `Open` (som Project) i IntelliJ så får du alle komponentene inn i ett
 IntelliJ-oppsett.
@@ -50,10 +61,18 @@ IntelliJ-oppsett.
 
 ### Hente nye repoer som er lagt til
 
-Mer dokumentasjon: https://github.com/mateodelnorte/meta-git
+Kjør fra roten av dette repoet:
 
-- `git pull`
-- `meta git update`
+```bash
+git pull
+meta git update
+```
+
+`git pull` henter den oppdaterte `.meta`-filen. `meta git update` kloner manglende
+repoer og oppdaterer eksisterende repoer med `git pull`.
+Bruk `meta --dry-run git update` for å se planen uten å endre repoene.
+
+Mer dokumentasjon: https://github.com/gitkb/meta#commands
 
 ### Opprettelse av nytt repo
 
@@ -76,7 +95,9 @@ Dette gjelder både for frontend og backend
 
 #### tilleggstønader-repo
 
-- Kjør `meta project import <repo-navn> git@github.com:navikt/<repo-navn>`
+- Legg til `"<repo-navn>": "git@github.com:navikt/<repo-navn>.git"` under `projects` i [`.meta`](./.meta).
+  Den nye pakken har ikke den gamle `meta project import`-kommandoen.
+- Kjør `meta git update` for å klone repoet hvis det ikke finnes lokalt.
 - Legg til repot i [Lenker til repo](#lenker-til-repo)
 - Legg til repo i [settings.gradle.kts](./settings.gradle.kts)
 
