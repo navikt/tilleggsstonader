@@ -1,4 +1,4 @@
-# Copilot Instructions – Tilleggsstønader
+# Agents Instructions – Tilleggsstønader
 
 ## Oversikt
 
