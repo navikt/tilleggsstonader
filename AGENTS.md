@@ -26,6 +26,19 @@ Dette er et meta-repo (via [meta fra gitkb](https://github.com/gitkb/meta)) som 
 - HTTP-klienter har forhåndskonfigurerte auth-flows: `tokenExchange`, `azureClientCredential`, `azureOnBehalfOf`
 - Feature toggles via Unleash: `Toggle.TOGGLE_NAVN`
 
+## Team tilleggsstønader
+
+GitHub-brukernavn til teamet. Bruk dem ved @-omtaler, reviewer-forslag og CODEOWNERS.
+
+| Navn | GitHub |
+|---|---|
+| Sigmund Berbom | @sberbom |
+| Sara Hjelle | @sarahjelle |
+| William Andersson | @anderssonw |
+| Nibedita Pahari | @Nibeditanav |
+| Adnan Vrevic | @Adnan-Vrevic |
+| Andreas Strand | @AStrand94 |
+
 ## Kommunikasjon
 
 - Skriv commit-meldinger og PR-beskrivelser på **norsk**
