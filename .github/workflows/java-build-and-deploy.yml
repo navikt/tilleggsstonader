@@ -4,7 +4,7 @@ name: Bygg og deploy app til angitt miljø
 # Denne workflowen bygger en Java-applikasjon, pusher docker-image til GAR og
 # deployerer det hele til et spesifisert cluster, ut i fra et gitt tilhørende Nais-manifest.
 #
-# ** Denne jobben hopper over testing og linting **
+# Tester kjøres med mindre skip-tests er true.
 #
 # Det er påkrevd at kallende GitHub Actions-jobb setter følgende rettigheter:
 #
@@ -26,6 +26,14 @@ on:
         description: 'Sti til Nais-manifestet'
         required: true
         type: string
+      skip-tests:
+        description: 'Hopp over tester'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  id-token: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
@@ -53,6 +61,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6
 
       - name: "Kjør tester"
+        if: ${{ !inputs.skip-tests }}
         run: ./gradlew test -PskipLint
 
       - name: "Bygg applikasjonen"
