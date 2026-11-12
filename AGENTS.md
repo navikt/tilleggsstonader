@@ -39,8 +39,12 @@ GitHub-brukernavn til teamet. Bruk dem ved @-omtaler, reviewer-forslag og CODEOW
 | Adnan Vrevic | @Adnan-Vrevic |
 | Andreas Strand | @AStrand94 |
 
-## Kommunikasjon
+## Commits og PR-er
 
-- Skriv commit-meldinger og PR-beskrivelser på **norsk**
-- Fokuser på domeneendringer i commit-meldinger
+- Skriv på **norsk**.
+- Beskriv domeneendringen, ikke det tekniske.
+- Mottakeren kjenner domenet og repoene. Ikke forklar begreper, ikke gjenta kontekst som ligger i koden.
+- Commit: én linje, helst under 72 tegn. Brødtekst bare når «hvorfor» ikke er opplagt.
+- PR: en til tre setninger. Ingen oppsummering av diffen, ingen filliste, ingen «Testing»-seksjon med mindre noe avviker fra det vanlige.
+- Ingen fyllord eller innledning («Denne PR-en introduserer ...»). Start med endringen.
 - Kjør `./gradlew spotlessApply` (backend) eller `yarn lint` (frontend) før commit
