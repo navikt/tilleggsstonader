@@ -66,7 +66,7 @@ spec:
 
         - alert: Behandlinger uten oppgave i TS-sak
           expr: max(behandlinger_uten_oppgave{team="tilleggsstonader"}) > 0
-          for: 30m
+          for: 60m
           annotations:
             consequence: "{{ $value }} åpne behandlinger har ingen åpen oppgave tilknyttet seg, vil ikke bli synlig i oppgavebenken"
             action: "Hvis oppgave har blitt ferdigstilt manuelt kan det opprettes ny oppgave gjennom TS-sak sin swagger."
@@ -78,7 +78,7 @@ spec:
 
         - alert: Oppgaver tildelt ukjent enhet i TS-sak
           expr: max(oppgaver_tildelt_ukjent_enhet{team="tilleggsstonader"}) > 0
-          for: 30m
+          for: 60m
           annotations:
             consequence: "{{ $value }} oppgaver er tildelt en ukjent enhet og blir ikke synlig i oppgavebenken"
             action: "Hvis oppgave har blitt flyttet til en ukjent enhet kan det opprettes ny oppgave gjennom TS-sak sin swagger."
