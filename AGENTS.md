@@ -30,14 +30,14 @@ Dette er et meta-repo (via [meta fra gitkb](https://github.com/gitkb/meta)) som 
 
 GitHub-brukernavn til teamet. Bruk dem ved @-omtaler, reviewer-forslag og CODEOWNERS.
 
-| Navn | GitHub |
-|---|---|
-| Sigmund Berbom | @sberbom |
-| Sara Hjelle | @sarahjelle |
-| William Andersson | @anderssonw |
-| Nibedita Pahari | @Nibeditanav |
-| Adnan Vrevic | @Adnan-Vrevic |
-| Andreas Strand | @AStrand94 |
+| Navn              | GitHub        |
+| ----------------- | ------------- |
+| Sigmund Berbom    | @sberbom      |
+| Sara Hjelle       | @sarahjelle   |
+| William Andersson | @anderssonw   |
+| Nibedita Pahari   | @Nibeditanav  |
+| Adnan Vrevic      | @Adnan-Vrevic |
+| Andreas Strand    | @AStrand94    |
 
 ## Commits og PR-er
 
@@ -48,3 +48,5 @@ GitHub-brukernavn til teamet. Bruk dem ved @-omtaler, reviewer-forslag og CODEOW
 - PR: en til tre setninger. Ingen oppsummering av diffen, ingen filliste, ingen «Testing»-seksjon med mindre noe avviker fra det vanlige.
 - Ingen fyllord eller innledning («Denne PR-en introduserer ...»). Start med endringen.
 - Kjør `./gradlew spotlessApply` (backend) eller `yarn lint` (frontend) før commit
+
+Ved endringer i søknadsflyt eller nye søknadsfelt: les [docs/agent/dataflyt-soknad.md](docs/agent/dataflyt-soknad.md).
