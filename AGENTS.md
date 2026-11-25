@@ -39,6 +39,11 @@ GitHub-brukernavn til teamet. Bruk dem ved @-omtaler, reviewer-forslag og CODEOW
 | Adnan Vrevic      | @Adnan-Vrevic |
 | Andreas Strand    | @AStrand94    |
 
+## Kotlin
+
+- Ikke bruk `!!` i produksjonskode. Kast en feil med en beskrivende feilmelding i stedet, for eksempel `?: error("Mangler ...")` eller `requireNotNull(x) { "..." }`.
+- `!!` er greit i tester.
+
 ## Commits og PR-er
 
 - Skriv på **norsk**.
